@@ -15,10 +15,10 @@ export const Header = styled.header`
 		align-items: center;
 		justify-content: center;
 `
-		export const Container  = styled.div`
+export const Container = styled.div`
             margin: 0 auto;
         `
-		export const HeaderContent  = styled.div`
+export const HeaderContent = styled.div`
             display: flex;
 						flex-flow: row nowrap;
             align-items: center;

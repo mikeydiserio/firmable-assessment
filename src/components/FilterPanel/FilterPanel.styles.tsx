@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 export const Panel = styled.div`
   background-color: var(--light-gray);
-  padding: 1.5rem;
+  padding: 1.5rem;s
   margin-bottom: 1.5rem;
   width: 100%;
   border-right: 2px solid white;

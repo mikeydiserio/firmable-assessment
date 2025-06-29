@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
+import { css } from '@emotion/react'
 
 const resultsStyle = css`
   width: 100%;
@@ -13,18 +13,7 @@ const resultsStyle = css`
     margin-bottom: 1rem;
   }
 
-  .sort-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-
-    select {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 0.375rem;
-    }
-  }
+  
 
   .loading {
     display: none;
@@ -36,7 +25,7 @@ const resultsStyle = css`
   .pagination {
     margin-top: 2rem;
   }
-`;
+`
 
 export default function ResultsPanel() {
   return (
@@ -59,9 +48,9 @@ export default function ResultsPanel() {
       <div id="loadingIndicator" className="loading">
         <span>Loading companies...</span>
       </div>
-        
+
       <div id="resultsContainer">{/* TODO: Render results here */}</div>
       <div id="paginationContainer" className="pagination">{/* TODO: Render pagination here */}</div>
     </div>
-  );
+  )
 }

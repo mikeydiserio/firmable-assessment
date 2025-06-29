@@ -1,6 +1,10 @@
 
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
+// export const SearchIcon = styled.div`
+//  height: 24px;
+//  width: 24px;
+// `
 export const SearchInput = styled.input`
     position: relative;
     min-width: 450px;
@@ -11,13 +15,14 @@ export const SearchInput = styled.input`
     font-size: 1rem;
     transition: all 0.2s;
     height: auto;
+    left: 48px;
 
     &:focus {
         outline: none;
         border-color: var(--primary-color);
         box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
     }
-`;
+`
 
 export const SearchContainer = styled.div`
     display: flex;
@@ -26,7 +31,7 @@ export const SearchContainer = styled.div`
     border: 1px solid #d1d5db;
 `
 
-export const SearchSuggestions =styled.div`
+export const SearchSuggestions = styled.div`
     position: absolute;
     z-index: 10;
     width: 100%;
@@ -36,9 +41,9 @@ export const SearchSuggestions =styled.div`
     border: 1px solid #e5e7eb;
     overflow-y: auto;   
     top: 30px;
-`;
+`
 
-export const SuggestionItem  = styled.div `
+export const SuggestionItem = styled.div`
         color: black;
         padding: 0.75rem 1rem;
         cursor: pointer;

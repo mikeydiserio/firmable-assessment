@@ -1,108 +1,110 @@
 // components/FilterPanel.tsx
 /** @jsxImportSource @emotion/react */
-import React from 'react';
-import { IFilters } from '../../types/types';
-import * as S from './FilterPanel.styles';
+import React from 'react'
+import { IFilters } from '../../types/types'
+import * as S from './FilterPanel.styles'
 
 export interface FilterPanelProps {
-    filters: IFilters;
-    onFilterChange: (newFilters: Partial<IFilters>) => void;
-    onApplyFilters: () => void;
-    onResetFilters: () => void;
+  filters: IFilters
+  onFilterChange: (newFilters: Partial<IFilters>) => void
+  onApplyFilters: () => void
+  onResetFilters: () => void
 }
 
 const industries = [
-    'Technology',
-    'Construction',
-    'Healthcare',
-    'Finance',
-    'Retail',
-    'Manufacturing',
-    'Hospitality',
-    'Agriculture',
-    'Professional Services',
-    'Logistics',
-    'Education',
-    'Security',
-    'Consulting',
-];
-const states = ['VIC', 'NSW', 'QLD', 'WA', 'SA'];
-const revenueBands = ['0-1M', '1M-5M', '5M-10M', '10M-50M', '50M+'];
-const companySizes = {
-    "micro (1-10)": 1,
-    "small (10-100)": 2,
-    "medium (100-1000)": 3,
-    "large (1000-10,000)": 4,
-    "enterprise (10,000+)": 5.
-};
+  'Technology',
+  'Construction',
+  'Healthcare',
+  'Finance',
+  'Retail',
+  'Manufacturing',
+  'Hospitality',
+  'Agriculture',
+  'Professional Services',
+  'Logistics',
+  'Education',
+  'Security',
+  'Consulting',
+]
+const states = ['VIC', 'NSW', 'QLD', 'WA', 'SA']
+const revenueBands = ['0-1M', '1M-5M', '5M-10M', '10M-50M', '50M+']
+const employeeRangeOptions = [
+  { value: 1, label: '1-10 (Micro)' },
+  { value: 2, label: '11-50 (Small)' },
+  { value: 3, label: '51-200 (Medium)' },
+  { value: 4, label: '201-1000 (Large)' },
+  { value: 5, label: '1000+ (Enterprise)' },
+]
 const FilterPanel: React.FC<FilterPanelProps> = ({
-    filters,
-    onFilterChange,
-    onApplyFilters,
-    onResetFilters,
+  filters,
+  onFilterChange,
+  onApplyFilters,
+  onResetFilters,
 }) => {
-    const handleIndustryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        onFilterChange({ industry: e.target.value });
-    };
+  const handleIndustryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onFilterChange({ industry: e.target.value })
+  }
 
-    const handleEmployeeRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-       console.log("Employee Range Change", e.target.value);
-        onFilterChange({ employeeRange: parseInt(e.target.value) });
-    };
+  const handleEmployeeRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log("Employee Range Change", e.target.value)
+    onFilterChange({ employeeRange: parseInt(e.target.value) })
+  }
 
-    const handleStateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = e.target;
+  const handleStateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target
     const updatedStates = checked
-        ? [...filters.states, value]
-        : filters.states.filter((state) => state !== value);
-        onFilterChange({ states: updatedStates });
-    };
+      ? [...filters.states, value]
+      : filters.states.filter((state) => state !== value)
+    onFilterChange({ states: updatedStates })
+  }
 
-    const handleRevenueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        onFilterChange({ revenueBand: e.target.value });
-    };
+  const handleRevenueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onFilterChange({ revenueBand: e.target.value })
+  }
 
-    if (!filters) {
-        <span>no filters</span>
-    }
+  if (!filters) {
+    <span>no filters</span>
+  }
 
-    return (
-        <S.Panel>
-            <S.FilterHeading>Filters</S.FilterHeading>
-                <S.FilterSection>
-                    <S.FilterTitle>Industry</S.FilterTitle>
-                        <select
-                            id="industryFilter"
-                            className="w-full p-2 border rounded"
-                            value={filters.industry}
-                            onChange={handleIndustryChange}
-                        >
-                    <option value="medium">All Industries</option>
-                    {industries.map((industry) => (
-                        <option key={industry} value={industry}>
-                        {industry}
-                        </option>
-                    ))}
-                    </select>
-                </S.FilterSection>
+  return (
+    <S.Panel>
+      <S.FilterHeading>Filters</S.FilterHeading>
+      <S.FilterSection>
+        <S.FilterTitle>Industry</S.FilterTitle>
+        <select
+          id="industryFilter"
+          className="w-full p-2 border rounded"
+          value={filters.industry}
+          onChange={handleIndustryChange}
+        >
+          <option value="medium">All Industries</option>
+          {industries.map((industry) => (
+            <option key={industry} value={industry}>
+              {industry}
+            </option>
+          ))}
+        </select>
+      </S.FilterSection>
 
-        <S.FilterSection>
-                                <S.FilterTitle>No. of Employees</S.FilterTitle>
+      <S.FilterSection>
+        <S.FilterTitle>No. of Employees</S.FilterTitle>
 
 
-            <select id="companySizeSelect"
-                value={filters.employeeRange}
-                onChange={handleEmployeeRangeChange}
-            >
-                    {Object.entries(companySizes).map(([value, text]) => (
-                    <option key={value} value={text}>
-                        {value}
-                    </option>
-                    ))}
-            </select>
-        </S.FilterSection>
+        <select
+          id="companySizeSelect"
+          value={filters.employeeRange}
+          onChange={handleEmployeeRangeChange}
+        >
+          {employeeRangeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        {/* Removed the original range labels as they are replaced by select options */}
+      </S.FilterSection>
 
-        <S.FilterSection>
+      <S.FilterSection>
         <S.FilterTitle>States</S.FilterTitle>
         {states.map((state) => (
           <S.CheckboxItem key={state} className="checkbox-item">
@@ -147,7 +149,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       >
         Reset
       </button>
-    </S.Panel>  );
-};
+    </S.Panel>)
+}
 
-export default FilterPanel;
+export default FilterPanel

@@ -1,11 +1,11 @@
 
-import { Company } from '../../types/types';
-import { formatABN, getEmployeeSize } from '../../utils/helpers';
-import * as S from './CompanyCard.styles';
+import { Company } from '../../types/types'
+import { formatABN, getEmployeeSize } from '../../utils/helpers'
+import * as S from './CompanyCard.styles'
 
 export interface CompanyCardProps {
-  company: Company;
-  onViewDetails: (companyId: number) => void;
+  company: Company
+  onViewDetails: (companyId: number) => void
 }
 
 const CompanyCard: React.FC<CompanyCardProps> = ({ company, onViewDetails }) => {
@@ -20,7 +20,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, onViewDetails }) => 
       </S.CompanyDetail>
       <S.CompanyDetail>
         <S.DetailLabel>ABN:</S.DetailLabel>
-         <S.DetailValue>{formatABN(company.abn)}</S.DetailValue>
+        <S.DetailValue>{formatABN(company.abn)}</S.DetailValue>
       </S.CompanyDetail>
       <S.CompanyDetail>
         <S.DetailLabel>Employees:</S.DetailLabel>
@@ -50,7 +50,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, onViewDetails }) => 
         </S.ViewDetailsButton>
       </S.CTAContainer> */}
     </S.CompanyCardStyles>
-  );
-};
+  )
+}
 
-export default CompanyCard;
+export default CompanyCard

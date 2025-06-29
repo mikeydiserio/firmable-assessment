@@ -1,16 +1,15 @@
-import { Company } from '../../types/types';
-import { formatABN, getEmployeeSize } from '../../utils/helpers';
-import * as S from './CompanyDetailModal.styles';
+import { Company } from '../../types/types'
+import { formatABN, getEmployeeSize } from '../../utils/helpers'
+import * as S from './CompanyDetailModal.styles'
 
 export interface CompanyDetailModalProps {
-  company: Company | null;
-  onClose: () => void;
+  company: Company | null
+  onClose: () => void
 }
-
 
 const CompanyDetailModal: React.FC<CompanyDetailModalProps> = ({ company, onClose }) => {
   if (!company) {
-    return null;
+    return null
   }
 
   return (
@@ -95,7 +94,7 @@ const CompanyDetailModal: React.FC<CompanyDetailModalProps> = ({ company, onClos
         </div>
       </S.ModalContent>
     </S.ModalOverlay>
-  );
-};
+  )
+}
 
-export default CompanyDetailModal;
+export default CompanyDetailModal

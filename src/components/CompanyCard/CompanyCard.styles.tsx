@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
 export const CompanyCardStyles = styled.div`
     background-color: white;
@@ -16,7 +16,7 @@ export const CompanyCardStyles = styled.div`
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-bottom: 4px solid var(--primary-color);
     }
-`;
+`
 
 export const CompanyName = styled.h2`
     font-weight: 600;
@@ -54,7 +54,7 @@ export const CTAContainer = styled.div`
     margin-top: 1rem;
     width: 100%;
 `
-    
+
 export const ViewDetailsButton = styled.button`
     background-color: var(--primary-color);
     color: white;

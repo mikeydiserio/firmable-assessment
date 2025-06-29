@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
 export const PaginationContainer = styled.div`
     display: flex;
     justify-content: center;
-`;
+`
 export const PaginationButton = styled.button`
     height: 48px;
     width: 48px;

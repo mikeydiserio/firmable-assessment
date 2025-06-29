@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
 export const ModalOverlay = styled.div`
     position: fixed;
@@ -24,7 +24,7 @@ export const ModalContent = styled.div`
   position: relative;
     color: #6b7280;
 
-`;
+`
 
 export const CloseModalButton = styled.button`
   position: absolute;
@@ -35,4 +35,4 @@ export const CloseModalButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   color: #6b7280;
-`;
+`

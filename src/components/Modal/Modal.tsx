@@ -1,6 +1,6 @@
-'use client';
-import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+'use client'
+import styled from '@emotion/styled'
+import React, { useEffect, useState } from 'react'
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -9,7 +9,7 @@ const ModalOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 
 const ModalContainer = styled.div`
   background-color: #2d2d2d;
@@ -18,19 +18,19 @@ const ModalContainer = styled.div`
   padding: 24px;
   max-width: 400px;
   width: 100%;
-`;
+`
 
 const ModalTitle = styled.h3`
   font-size: 1.125rem;
   color: var(--neon-blue);
   margin-bottom: 16px;
-`;
+`
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-`;
+`
 
 const ModalButton = styled.button`
   background-color: #2d2d2d;
@@ -38,40 +38,40 @@ const ModalButton = styled.button`
   border-radius: 9999px;
   padding: 8px 16px;
   cursor: pointer;
-`;
+`
 
 const CancelButton = styled(ModalButton)`
   border-color: var(--neon-blue);
   color: var(--neon-blue);
-`;
+`
 
 const LoadButton = styled(ModalButton)`
   border-color: var(--neon-pink);
   color: var(--neon-pink);
-`;
+`
 
 const Modal: React.FC = () => {
-  const [visible, setVisible] = useState<boolean>(false);
+  const [visible, setVisible] = useState<boolean>(false)
 
   const handleCancel = () => {
-      console.log('Modal cancelled');
-      setVisible(false);
+    console.log('Modal cancelled')
+    setVisible(false)
 
-  };
+  }
 
   const handleConfirm = () => {
-    setVisible(false);
+    setVisible(false)
     // Here you would typically handle the loading of the sample
     // For example, you might dispatch an action or call a function to load the sample
-  };
+  }
 
   useEffect(() => {
-    const openModal = () => setVisible(true);
-    window.addEventListener('openSampleModal', openModal);
-    return () => window.removeEventListener('openSampleModal', openModal);
-  }, []);
+    const openModal = () => setVisible(true)
+    window.addEventListener('openSampleModal', openModal)
+    return () => window.removeEventListener('openSampleModal', openModal)
+  }, [])
 
-  if (!visible) return null;
+  if (!visible) return null
 
   return (
     <ModalOverlay>
@@ -83,7 +83,7 @@ const Modal: React.FC = () => {
         </ButtonContainer>
       </ModalContainer>
     </ModalOverlay>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal
