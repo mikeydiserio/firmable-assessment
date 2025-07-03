@@ -46,3 +46,6 @@ next-env.d.ts
 .nx/workspace-data
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
+
+./supabase-python/csv's'data
+*.xml

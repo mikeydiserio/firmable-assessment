@@ -1,107 +1,74 @@
-import { FlatCompat } from '@eslint/eslintrc'
+import antfu from '@antfu/eslint-config'
+import nextPlugin from '@next/eslint-plugin-next'
+import jestDom from 'eslint-plugin-jest-dom'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import playwright from 'eslint-plugin-playwright'
+import storybook from 'eslint-plugin-storybook'
 
-import typescriptPlugin from '@typescript-eslint/eslint-plugin'
-import typescriptParser from '@typescript-eslint/parser'
-import jestPlugin from 'eslint-plugin-jest'
-import reactPlugin from 'eslint-plugin-react'
-import pluginSimpleImportSort from 'eslint-plugin-simple-import-sort'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
+export default antfu(
+  {
+    react: true,
+    typescript: true,
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+    // Configuration preferences
+    lessOpinionated: false,
+    preferGlobal: false,
+    isInEditor: false,
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-})
+    // Code style
+    stylistic: {
+      semi: false,
+    },
 
-export default [{
-  rules: {
-    "react/react-in-jsx-scope": "off"
-  }
-}, {
-  plugins: {
-    // key "simple-import-sort" is the plugin namespace
-    "simple-import-sort": pluginSimpleImportSort
+    // Format settings
+    formatters: {
+      css: true,
+    },
+
+    // Ignored paths
+    ignores: [
+      'migrations/**/*',
+    ],
   },
-},
-{
-  rules: {
-    "simple-import-sort/imports": [
-      "error",
-      { groups: ["..."] }
-    ]
-  }
-},
-{
-  files: ["**/*.{js,mjs,cjs,ts,mts,jsx,tsx}"],
-  languageOptions: {
-    // common parser options, enable TypeScript and JSX
-    parser: "@typescript-eslint/parser",
-    parserOptions: {
-      sourceType: "module"
-    }
-  }
-},
-// Traditional config support (e.g., Next.js recommended rules)
-...compat.extends('next/core-web-vitals', 'next', 'next/typescript'),
-...compat.extends('react'),
-
-// ESLint's built-in recommended rules
-js.configs.recommended,
-
-// React plugin
-{
-  files: ['**/*.jsx', '**/*.tsx'],
-  languageOptions: {
-    parserOptions: {
-      ecmaFeatures: {
-        jsx: true,
-      },
+  // --- Next.js Specific Rules ---
+  {
+    plugins: {
+      '@next/next': nextPlugin,
+    },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
     },
   },
-  plugins: {
-    react: reactPlugin,
+  // --- Accessibility Rules ---
+  jsxA11y.flatConfigs.recommended,
+  // --- Testing Rules ---
+  {
+    files: [
+      '**/*.test.ts?(x)',
+    ],
+    ...jestDom.configs['flat/recommended'],
   },
-  rules: {
-    ...reactPlugin.configs.recommended.rules,
+  // --- E2E Testing Rules ---
+  {
+    files: [
+      '**/*.spec.ts',
+      '**/*.e2e.ts',
+    ],
+    ...playwright.configs['flat/recommended'],
   },
-},
-
-// TypeScript plugin
-{
-  files: ['**/*.ts', '**/*.tsx'],
-  languageOptions: {
-    parser: typescriptParser,
-    parserOptions: {
-      project: './tsconfig.json',
+  // --- Storybook Rules ---
+  ...storybook.configs['flat/recommended'],
+  // --- Custom Rule Overrides ---
+  {
+    rules: {
+      'antfu/no-top-level-await': 'off', // Allow top-level await
+      'style/brace-style': ['error', '1tbs'], // Use the default brace style
+      'ts/consistent-type-definitions': ['error', 'type'], // Use `type` instead of `interface`
+      'react/prefer-destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
+      'node/prefer-global/process': 'off', // Allow using `process.env`
+      'test/padding-around-all': 'error', // Add padding in test files
+      'test/prefer-lowercase-title': 'off', // Allow using uppercase titles in test titles
     },
   },
-  plugins: {
-    '@typescript-eslint': typescriptPlugin,
-  },
-  rules: {
-    ...typescriptPlugin.configs.recommended.rules,
-  },
-},
-
-// Jest plugin (only for test files)
-{
-  files: ['**/*.test.js', '**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*'],
-  plugins: {
-    jest: jestPlugin,
-  },
-  rules: {
-    ...jestPlugin.configs.recommended.rules,
-  },
-},
-
-// Custom rules for any .js files
-{
-  files: ['**/*.js'],
-  rules: {
-    'no-console': 'warn',
-    'semi': ['error', 'always'],
-  },
-},
-]
+)

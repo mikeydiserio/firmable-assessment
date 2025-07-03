@@ -1,0 +1,5 @@
+Column Name,Data Type,Description,Primary Key
+id,bigint,An auto-incrementing unique ID.,Yes
+abn,varchar(11),A foreign key linking back to the entities table.,
+name,text,The business or trading name text.,
+type,varchar(3),"The type of name (e.g., 'BN' for Business Name).",
