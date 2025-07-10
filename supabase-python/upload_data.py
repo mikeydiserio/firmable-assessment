@@ -25,24 +25,32 @@ logging.basicConfig(
 class Config:
     """Holds all application configuration."""
     db_host: str
-    db_name: str
     db_user: str
     db_password: str
     db_port: int
+    db_name: str
     xml_data_directory: str
 
 def load_config_from_env() -> Config:
     """Loads configuration from environment variables."""
+   # Load environment variables from .env
     load_dotenv()
+    # Fetch variables
+    USER = os.getenv("user")
+    PASSWORD = os.getenv("password")
+    HOST = os.getenv("host")
+    PORT = os.getenv("port")
+    DBNAME = os.getenv("dbname")
+
     return Config(
-        db_host=os.getenv("SUPABASE_DB_HOST"),
-        db_name=os.getenv("SUPABASE_DB_NAME", "postgres"),
-        db_user=os.getenv("SUPABASE_DB_USER", "postgres"),
-        db_password=os.getenv("SUPABASE_DB_PASSWORD"),
-        db_port=int(os.getenv("SUPABASE_DB_PORT", 5432)),
+        db_host=HOST,
+        db_user=USER,
+        db_password=PASSWORD,
+        db_name=DBNAME,
+        db_port=PORT,
         xml_data_directory='data'
     )
-DBURL=os.getenv("DATABASE_URL"),
+
 # --- 3. Robust Database Connection Management ---
 # A context manager ensures the database connection is always handled correctly
 # (opened, committed/rolled back, and closed), even if errors occur.
@@ -59,8 +67,7 @@ def get_db_connection(config: Config) -> Generator[psycopg2.extensions.connectio
         f"{config.db_host}:{config.db_port}/{config.db_name}"
     )
     try:
-        # conn = psycopg2.connect(dsn)
-        conn = psycopg2.connect(DBURL)
+        conn = psycopg2.connect(dsn)
         yield conn
     except psycopg2.OperationalError as e:
         logging.error(f"Database connection failed: {e}")

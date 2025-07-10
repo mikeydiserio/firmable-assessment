@@ -1,16 +1,21 @@
+
 import psycopg2
 from dotenv import load_dotenv
 import os
 
 # Load environment variables from .env
 load_dotenv()
-
 # Fetch variables
-USER = os.getenv("SUPABASE_DB_USER")
-PASSWORD = os.getenv("SUPABASE_DB_PASSWORD")
-HOST = os.getenv("SUPABASE_DB_HOST")
-PORT = os.getenv("SUPABASE_DB_PORT")
-DBNAME = os.getenv("SUPABASE_DB_NAME")
+USER = os.getenv("user")
+PASSWORD = os.getenv("password")
+HOST = os.getenv("host")
+PORT = os.getenv("port")
+DBNAME = os.getenv("dbname")
+
+print("USER:", USER)
+print("HOST:", HOST)
+print("PORT:", PORT)
+
 
 # Connect to the database
 try:
@@ -20,6 +25,7 @@ try:
         host=HOST,
         port=PORT,
         dbname=DBNAME
+        xml_data_directory='data'
     )
     print("Connection successful!")
     

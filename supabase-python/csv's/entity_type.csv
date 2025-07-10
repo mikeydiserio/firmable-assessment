@@ -1,3 +1,0 @@
-Column Name,Data Type,Description,Primary Key
-code,varchar(4),"The entity type code (e.g., 'IND').",Yes
-description,text,"The full description (e.g., 'Individual/Sole Trader').",
