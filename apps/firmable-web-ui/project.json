@@ -1,0 +1,54 @@
+{
+	"name": "firmable-web-ui",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "firmable-web-ui/src",
+	"projectType": "application",
+	"tags": [],
+	"targets": {
+		"dev": {
+			"executor": "@nx/next:dev",
+			"options": {
+				"buildTarget": "firmable-web-ui:build",
+				"devServerTarget": "firmable-web-ui:serve-static"
+			}
+		},
+		"build": {
+			"executor": "@nx/next:build",
+			"outputs": [
+				"{workspaceRoot}/dist/apps/{projectRoot}"
+			],
+			"options": {
+				"outputPath": "dist/apps/firmable-web-ui",
+				"buildDepsTarget": "firmable-web-ui:build-deps",
+				"watchDepsTarget": "firmable-web-ui:watch-deps"
+			}
+		},
+		"serve-static": {
+			"executor": "@nx/next:serve-static",
+			"options": {
+				"buildTarget": "firmable-web-ui:build"
+			}
+		},
+		"build-deps": {
+			"executor": "@nx/next:build-deps",
+			"options": {
+				"outputPath": "dist/apps/firmable-web-ui"
+			}
+		},
+		"test": {
+			"executor": "@nx/jest:jest",
+			"options": {
+				"jestConfig": "apps/firmable-web-ui/jest.config.ts",
+				"passWithNoTests": true
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:lint",
+			"options": {
+				"lintFilePatterns": [
+					"apps/firmable-web-ui/**/*.{ts,tsx,js,jsx}"
+				]
+			}
+		}
+	}
+}

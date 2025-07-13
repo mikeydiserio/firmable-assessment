@@ -1,0 +1,11 @@
+{
+	"presets": [
+		[
+			"@nx/react",
+			{
+				"runtime": "automatic"
+			}
+		]
+	],
+	"plugins": []
+}

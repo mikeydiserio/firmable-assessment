@@ -1,10 +1,10 @@
 {
-  "arrowParens": "avoid",
+  "proseWrap": "preserve",
+  "useTabs": true,
   "bracketSpacing": true,
   "jsxBracketSameLine": false,
   "semi": false,
   "singleQuote": true,
-  "tabWidth": 2,
-  "trailingComma": "all",
-  "useTabs": true
+  "tabWidth": 1,
+  "trailingComma": "all"
 }
