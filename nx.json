@@ -1,21 +1,19 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "defaultBase": "master",
-  "nxCloudId": "6865ad5dfab7fe0e11cd29b8",
-  "plugins": [
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "eslint:lint"
-      }
-    },
-    {
-      "plugin": "@nx/next/plugin",
-      "options": {
-        "buildTargetName": "next:build",
-        "devTargetName": "dev",
-        "startTargetName": "start"
-      }
-    }
-  ]
+	"$schema": "./node_modules/nx/schemas/nx-schema.json",
+	"defaultBase": "master",
+	"nxCloudId": "6873b63c3b87768ce953f7be",
+	"plugins": [
+		{
+			"plugin": "@nx/eslint/plugin",
+			"options": { "targetName": "eslint:lint" }
+		},
+		{
+			"plugin": "@nx/next/plugin",
+			"options": {
+				"buildTargetName": "next:build",
+				"devTargetName": "dev",
+				"startTargetName": "start"
+			}
+		}
+	]
 }
