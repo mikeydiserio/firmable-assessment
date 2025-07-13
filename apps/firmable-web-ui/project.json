@@ -6,7 +6,6 @@
 	"tags": [],
 	"targets": {
 		"dev": {
-			"executor": "@nx/next:dev",
 			"options": {
 				"buildTarget": "firmable-web-ui:build",
 				"devServerTarget": "firmable-web-ui:serve-static"
@@ -36,11 +35,23 @@
 			}
 		},
 		"test": {
-			"executor": "@nx/jest:jest",
-			"options": {
-				"jestConfig": "apps/firmable-web-ui/jest.config.ts",
-				"passWithNoTests": true
-			}
+			"globals": true,
+			"cache": true,
+			"environment": "jsdom",
+			"deps": {
+				"inline": [
+					"vitest-canvas-mock"
+				]
+			},
+			"include": [
+				"src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
+			],
+			"setupFiles": "./test-setup.ts",
+			"environmentOptions": {
+				"jsdom": {
+					"resources": "usable"
+				}
+			},
 		},
 		"lint": {
 			"executor": "@nx/eslint:lint",

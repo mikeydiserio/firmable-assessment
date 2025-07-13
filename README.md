@@ -1,23 +1,20 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./dist/out-tsc",
-    "types": [
-      "node",
-      "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts",
-      "vite/client"
-    ]
-  },
-  "exclude": [
-    "src/**/*.spec.ts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.tsx",
-    "src/**/*.test.tsx",
-    "src/**/*.spec.js",
-    "src/**/*.test.js",
-    "src/**/*.spec.jsx",
-    "src/**/*.test.jsx"
-  ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
-}
+Front-end Portion:
+
+NX + React + Next + EmotionJS for Styling
+
+/src contains the code for the app, nx was added after the app was created, via create-next-app CLI
+
+pnpm used for faster package management
+
+NX used to ensure scaleability with ease
+
+
+Back-end Portion:
+
+Create Tables in Supabase
+
+- Use Python script to parse over .xml files and then send them as data entries for the above tables
+
+
+
+
