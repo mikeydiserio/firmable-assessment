@@ -1,7 +1,6 @@
 {
 	"name": "firmable-web-ui",
-	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "firmable-web-ui/src",
+	"sourceRoot": "apps/firmable-web-ui/src",
 	"projectType": "application",
 	"tags": [],
 	"targets": {
@@ -11,48 +10,38 @@
 				"outputPath": "dist/apps/firmable-web-ui"
 			}
 		},
-		"build": {
-			"executor": "@nx/next:build",
-			"outputs": [
-				"{workspaceRoot}/dist/apps/{projectRoot}"
-			],
-			"options": {
-				"outputPath": "dist/apps/firmable-web-ui",
-				"buildDepsTarget": "firmable-web-ui:build-deps",
-				"watchDepsTarget": "firmable-web-ui:watch-deps"
-			}
-		},
-		"build-deps": {
-			"executor": "@nx/next:build-deps",
-			"options": {
-				"outputPath": "dist/apps/firmable-web-ui"
-			}
-		},
-		"test": {
-			"globals": true,
-			"cache": true,
-			"environment": "jsdom",
-			"deps": {
-				"inline": [
-					"vitest-canvas-mock"
-				]
-			},
-			"include": [
-				"src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
-			],
-			"setupFiles": "./test-setup.ts",
-			"environmentOptions": {
-				"jsdom": {
-					"resources": "usable"
-				}
-			}
-		},
 		"lint": {
 			"executor": "@nx/eslint:lint",
 			"options": {
 				"lintFilePatterns": [
 					"apps/firmable-web-ui/**/*.{ts,tsx,js,jsx}"
 				]
+			},
+			"build": {
+				"executor": "@nx/next:build",
+				"outputs": [
+					"{workspaceRoot}/dist/apps/{projectRoot}"
+				],
+				"options": {
+					"outputPath": "dist/apps/firmable-web-ui",
+					"buildDepsTarget": "firmable-web-ui:build-deps",
+					"watchDepsTarget": "firmable-web-ui:watch-deps"
+				}
+			},
+			"build-deps": {
+				"executor": "@nx/next:build-deps",
+				"options": {
+					"outputPath": "dist/apps/firmable-web-ui"
+				}
+			},
+			"test": {
+				"executor": "@nx/jest:jest",
+				"outputs": [
+					"{workspaceRoot}/coverage/{projectRoot}"
+				],
+				"options": {
+					"jestConfig": "apps/firmable-web-ui/jest.config.ts"
+				}
 			}
 		}
 	}
