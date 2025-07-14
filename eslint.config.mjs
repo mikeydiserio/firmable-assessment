@@ -1,9 +1,9 @@
-import antfu from '@antfu/eslint-config';
-import nextPlugin from '@next/eslint-plugin-next';
-import jestDom from 'eslint-plugin-jest-dom';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import playwright from 'eslint-plugin-playwright';
-import storybook from 'eslint-plugin-storybook';
+import antfu from '@antfu/eslint-config'
+import nextPlugin from '@next/eslint-plugin-next'
+import jestDom from 'eslint-plugin-jest-dom'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import playwright from 'eslint-plugin-playwright'
+import storybook from 'eslint-plugin-storybook'
 
 export default antfu(
   {
@@ -16,7 +16,7 @@ export default antfu(
 
     // Code style
     stylistic: {
-      semi: true,
+      semi: false,
     },
 
     // Format settings
@@ -62,6 +62,10 @@ export default antfu(
   {
     rules: {
       'antfu/no-top-level-await': 'off', // Allow top-level await
+      'jsonc/indent': 'off',
+      'jsonc/sort-keys': 'off', // Disable sorting of keys in JSON files
+      'style/eol-last': 'off',
+      'style/no-tabs': 'off',
       'style/brace-style': ['error', '1tbs'], // Use the default brace style
       'ts/consistent-type-definitions': ['error', 'type'], // Use `type` instead of `interface`
       'react/prefer-destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
@@ -70,4 +74,4 @@ export default antfu(
       'test/prefer-lowercase-title': 'off', // Allow using uppercase titles in test titles
     },
   },
-);
+)

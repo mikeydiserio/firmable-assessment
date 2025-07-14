@@ -6,9 +6,9 @@
 	"tags": [],
 	"targets": {
 		"dev": {
+			"executor": "@nx/next:dev",
 			"options": {
-				"buildTarget": "firmable-web-ui:build",
-				"devServerTarget": "firmable-web-ui:serve-static"
+				"outputPath": "dist/apps/firmable-web-ui"
 			}
 		},
 		"build": {
@@ -20,12 +20,6 @@
 				"outputPath": "dist/apps/firmable-web-ui",
 				"buildDepsTarget": "firmable-web-ui:build-deps",
 				"watchDepsTarget": "firmable-web-ui:watch-deps"
-			}
-		},
-		"serve-static": {
-			"executor": "@nx/next:serve-static",
-			"options": {
-				"buildTarget": "firmable-web-ui:build"
 			}
 		},
 		"build-deps": {
@@ -51,7 +45,7 @@
 				"jsdom": {
 					"resources": "usable"
 				}
-			},
+			}
 		},
 		"lint": {
 			"executor": "@nx/eslint:lint",

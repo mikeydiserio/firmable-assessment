@@ -1,10 +1,12 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": ".dist/out-tsc",
     "module": "commonjs",
+    "outDir": ".dist/out-tsc",
     "types": ["vitest", "node"]
   },
+  "files": [
+  ],
   "include": [
     "**/*.test.ts",
     "**/*.spec.ts",
@@ -15,7 +17,5 @@
     "**/*.test.jsx",
     "**/*.spec.jsx",
     "**/*.d.ts"
-  ],
-  "files": [
   ]
 }
