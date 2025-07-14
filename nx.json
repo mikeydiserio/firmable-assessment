@@ -1,13 +1,7 @@
 {
-  "workspaceLayout": {
-    "libsDir": "packages",
-    "appsDir": "apps"
-  },
+  "workspaceLayout": { "libsDir": "packages", "appsDir": "apps" },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
@@ -18,23 +12,11 @@
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
-    "sharedGlobals": [
-      "{workspaceRoot}/.github/workflows/ci.yml"
-    ]
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
   "plugins": [
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "targetName": "test"
-      }
-    },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
+    { "plugin": "@nx/vite/plugin", "options": { "targetName": "test" } },
     {
       "plugin": "@nx/next/plugin",
       "options": {
@@ -46,18 +28,8 @@
         "watchDepsTargetName": "watch-deps"
       }
     },
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "targetName": "e2e"
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint --fix"
-      }
-    }
+    { "plugin": "@nx/playwright/plugin", "options": { "targetName": "e2e" } },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint --fix" } }
   ],
   "targetDefaults": {
     "build": {
@@ -76,17 +48,8 @@
         "{workspaceRoot}/eslint.config.mjs"
       ]
     },
-    "test": {
-      "inputs": [
-        "^production",
-        "{workspaceRoot}/jest.preset.js"
-      ]
-    },
-    "e2e-ci--**/*": {
-      "dependsOn": [
-        "^build"
-      ]
-    }
+    "test": { "inputs": ["^production", "{workspaceRoot}/jest.preset.js"] },
+    "e2e-ci--**/*": { "dependsOn": ["^build"] }
   },
   "generators": {
     "@nx/react": {
@@ -96,14 +59,13 @@
         "bundler": "vite",
         "babel": true
       },
-      "component": {
-        "style": "css"
-      },
+      "component": { "style": "css" },
       "library": {
         "style": "css",
         "linter": "eslint",
         "unitTestRunner": "vitest"
       }
     }
-  }
+  },
+  "nxCloudId": "68751ee5d4eccd26fa54a2f7"
 }
