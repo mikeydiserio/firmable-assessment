@@ -11,7 +11,9 @@ import type { Company, IFilters, SortByOption } from '../types/types'
 import { getEmployeeCountRange, revenueBandToValue } from '../utils/helpers'
 import * as S from './page.styles'
 
-const STATES = ['VIC', 'NSW', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT']
+import { contentData } from '../mocks/content'
+
+const STATES = contentData.states
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -87,7 +89,9 @@ export const Page = () => {
       // State filter
       const matchesState =
         filters.states.length === 0 ||
-        filters.states.includes(company.address.state)
+        filters.states.some(
+          stateObj => stateObj.value === company.address.state,
+        )
 
       // Revenue band filter
       const matchesRevenueBand =
@@ -132,19 +136,19 @@ export const Page = () => {
 
   const totalPages = Math.ceil(filteredAndSortedCompanies.length / itemsPerPage)
 
-  const paginatedCompanies = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage
-    const endIndex = Math.min(
-      startIndex + itemsPerPage,
-      filteredAndSortedCompanies.length,
-    )
-    return filteredAndSortedCompanies.slice(startIndex, endIndex)
-  }, [currentPage, filteredAndSortedCompanies, itemsPerPage])
+  // const paginatedCompanies = useMemo(() => {
+  //   const startIndex = (currentPage - 1) * itemsPerPage
+  //   const endIndex = Math.min(
+  //     startIndex + itemsPerPage,
+  //     filteredAndSortedCompanies.length,
+  //   )
+  //   return filteredAndSortedCompanies.slice(startIndex, endIndex)
+  // }, [currentPage, filteredAndSortedCompanies, itemsPerPage])
 
-  const handleSearchChange = useCallback((term: string) => {
-    setSearchTerm(term)
-    setCurrentPage(1) // Reset to first page on search
-  }, [])
+  // const handleSearchChange = useCallback((term: string) => {
+  //   setSearchTerm(term)
+  //   setCurrentPage(1) // Reset to first page on search
+  // }, [])
 
   const handleFilterChange = useCallback((newFilters: Partial<IFilters>) => {
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }))
@@ -164,7 +168,7 @@ export const Page = () => {
       searchTerm: '',
       industry: '',
       employeeRange: 4,
-      states: ['VIC', 'NSW', 'QLD', 'WA', 'SA', 'TAS', 'ACT'],
+      states: contentData.states,
       revenueBand: '',
     })
     setSearchTerm('')
@@ -186,8 +190,10 @@ export const Page = () => {
   }, [])
 
   const handleViewDetails = useCallback(
-    (companyId: number) => {
-      const company = allCompanies.find(c => c.id === companyId)
+    (companyId: string) => {
+      const company = allCompanies.find(
+        c => c.id === Number.parseInt(companyId),
+      )
       setSelectedCompany(company || null)
     },
     [allCompanies],
@@ -211,7 +217,7 @@ export const Page = () => {
       <ClientProviderWrapper>
         <SearchBar
           onSelectSuggestion={handleSelectSuggestion}
-          placeholder="Search for companies, industries, or locations"
+          placeholder="Try searching for a company using aN ABN"
         />
         <S.Main>
           <FilterPanel
@@ -223,8 +229,8 @@ export const Page = () => {
 
           <div>
             <SearchResults
-              companies={paginatedCompanies}
-              loading={loading}
+              // companies={paginatedCompanies}
+              query={searchTerm}
               sortBy={sortBy}
               onSortChange={handleSortChange}
               onViewDetails={handleViewDetails}

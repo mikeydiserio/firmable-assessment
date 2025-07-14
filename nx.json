@@ -1,5 +1,8 @@
 {
-  "defaultBase": "master",
+  "workspaceLayout": {
+    "libsDir": "packages",
+    "appsDir": "apps"
+  },
   "namedInputs": {
     "default": [
       "{projectRoot}/**/*",
@@ -57,6 +60,28 @@
     }
   ],
   "targetDefaults": {
+    "build": {
+      "inputs": [
+        "^production",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/tsconfig.base.json",
+        "{workspaceRoot}/tsconfig.json"
+      ]
+    },
+    "lint": {
+      "inputs": [
+        "^production",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.mjs"
+      ]
+    },
+    "test": {
+      "inputs": [
+        "^production",
+        "{workspaceRoot}/jest.preset.js"
+      ]
+    },
     "e2e-ci--**/*": {
       "dependsOn": [
         "^build"

@@ -7,18 +7,18 @@ import { fileURLToPath } from 'url'
 import baseConfig from '../../eslint.config.mjs'
 
 const compat = new FlatCompat({
-	baseDirectory: dirname(fileURLToPath(import.meta.url)),
-	recommendedConfig: js.configs.recommended,
+  baseDirectory: dirname(fileURLToPath(import.meta.url)),
+  recommendedConfig: js.configs.recommended,
 })
 
 const configArray = [
-	...fixupConfigRules(compat.extends('next')),
-	...fixupConfigRules(compat.extends('next/core-web-vitals')),
-	...baseConfig,
-	...nx.configs['flat/react-typescript'],
-	{
-		ignores: ['.next/**/*'],
-	},
-];
+  ...fixupConfigRules(compat.extends('next')),
+  ...fixupConfigRules(compat.extends('next/core-web-vitals')),
+  ...baseConfig,
+  ...nx.configs['flat/react-typescript'],
+  {
+    ignores: ['.next/**/*'],
+  },
+]
 
-export default configArray;
+export default configArray

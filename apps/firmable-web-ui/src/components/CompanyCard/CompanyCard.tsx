@@ -1,4 +1,3 @@
-
 import { Company } from '../../types/types'
 import { formatABN, getEmployeeSize } from '../../utils/helpers'
 import * as S from './CompanyCard.styles'
@@ -8,7 +7,10 @@ export interface CompanyCardProps {
   onViewDetails: (companyId: number) => void
 }
 
-const CompanyCard: React.FC<CompanyCardProps> = ({ company, onViewDetails }) => {
+const CompanyCard: React.FC<CompanyCardProps> = ({
+  company,
+  onViewDetails,
+}) => {
   return (
     <S.CompanyCardStyles onClick={() => onViewDetails(company.id)}>
       <S.CompanyName>{company.name}</S.CompanyName>

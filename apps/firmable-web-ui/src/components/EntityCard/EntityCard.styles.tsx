@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const CompanyCardStyles = styled.div`
+export const EntityCardStyles = styled.div`
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -18,14 +18,14 @@ export const CompanyCardStyles = styled.div`
   }
 `
 
-export const CompanyName = styled.h2`
+export const EntityName = styled.h2`
   font-weight: 600;
   font-size: 1.125rem;
   color: #09baf0;
   margin-bottom: 0.5rem;
 `
 
-export const CompanyDetail = styled.div`
+export const EntityDetail = styled.div`
   display: flex;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;

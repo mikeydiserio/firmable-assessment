@@ -1,48 +1,73 @@
 {
-	"name": "firmable-web-ui",
-	"sourceRoot": "apps/firmable-web-ui/src",
-	"projectType": "application",
-	"tags": [],
-	"targets": {
-		"dev": {
-			"executor": "@nx/next:dev",
-			"options": {
-				"outputPath": "dist/apps/firmable-web-ui"
-			}
-		},
-		"lint": {
-			"executor": "@nx/eslint:lint",
-			"options": {
-				"lintFilePatterns": [
-					"apps/firmable-web-ui/**/*.{ts,tsx,js,jsx}"
-				]
-			},
-			"build": {
-				"executor": "@nx/next:build",
-				"outputs": [
-					"{workspaceRoot}/dist/apps/{projectRoot}"
-				],
-				"options": {
-					"outputPath": "dist/apps/firmable-web-ui",
-					"buildDepsTarget": "firmable-web-ui:build-deps",
-					"watchDepsTarget": "firmable-web-ui:watch-deps"
-				}
-			},
-			"build-deps": {
-				"executor": "@nx/next:build-deps",
-				"options": {
-					"outputPath": "dist/apps/firmable-web-ui"
-				}
-			},
-			"test": {
-				"executor": "@nx/jest:jest",
-				"outputs": [
-					"{workspaceRoot}/coverage/{projectRoot}"
-				],
-				"options": {
-					"jestConfig": "apps/firmable-web-ui/jest.config.ts"
-				}
-			}
-		}
-	}
+  "name": "firmable-web-ui",
+  "sourceRoot": "apps/firmable-web-ui/src",
+  "projectType": "application",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "tags": [
+    "type:app",
+    "scope:firmable-web-ui"
+  ],
+  "implicitDependencies": [
+    "shared-assets",
+    "shared-styles"
+  ],
+  "generators": {
+    "@nx/workspace:component": {
+      "style": "css"
+    }
+  },
+  "targets": {
+    "dev": {
+      "executor": "@nx/next:dev",
+      "options": {
+        "outputPath": "dist/apps/firmable-web-ui"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/firmable-web-ui/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": [
+        "{workspaceRoot}/dist/apps/{projectRoot}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/firmable-web-ui",
+        "buildDepsTarget": "firmable-web-ui:build-deps",
+        "watchDepsTarget": "firmable-web-ui:watch-deps"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/products/src/environments/environment.ts",
+              "with": "apps/products/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "aot": true,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/firmable-web-ui/jest.config.ts"
+      }
+    }
+  }
 }

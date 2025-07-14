@@ -45,8 +45,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     onFilterChange({ industry: e.target.value })
   }
 
-  const handleEmployeeRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log("Employee Range Change", e.target.value)
+  const handleEmployeeRangeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    console.log('Employee Range Change', e.target.value)
     onFilterChange({ employeeRange: parseInt(e.target.value) })
   }
 
@@ -54,8 +56,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     const { value, checked } = e.target
     const updatedStates = checked
       ? [...filters.states, value]
-      : filters.states.filter((state) => state !== value)
-    onFilterChange({ states: updatedStates })
+      : filters.states.filter(state => state.value !== value)
+    // onFilterChange({ states: updatedStates })
   }
 
   const handleRevenueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -63,7 +65,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   }
 
   if (!filters) {
-    <span>no filters</span>
+    ;<span>no filters</span>
   }
 
   return (
@@ -71,6 +73,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       <S.FilterHeading>Filters</S.FilterHeading>
       <S.FilterSection>
         <S.FilterTitle>Industry</S.FilterTitle>
+        <label htmlFor="industryFilter">Select Industry</label>
         <select
           id="industryFilter"
           className="w-full p-2 border rounded"
@@ -78,7 +81,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           onChange={handleIndustryChange}
         >
           <option value="medium">All Industries</option>
-          {industries.map((industry) => (
+          {industries.map(industry => (
             <option key={industry} value={industry}>
               {industry}
             </option>
@@ -88,14 +91,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
       <S.FilterSection>
         <S.FilterTitle>No. of Employees</S.FilterTitle>
-
-
+        <label htmlFor="companySizeSelect">Select number of employees</label>
         <select
           id="companySizeSelect"
           value={filters.employeeRange}
           onChange={handleEmployeeRangeChange}
         >
-          {employeeRangeOptions.map((option) => (
+          {employeeRangeOptions.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -106,13 +108,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
       <S.FilterSection>
         <S.FilterTitle>States</S.FilterTitle>
-        {states.map((state) => (
+        {states.map(state => (
           <S.CheckboxItem key={state} className="checkbox-item">
             <input
               type="checkbox"
               id={`state${state}`}
               value={state}
-              checked={filters.states.includes(state)}
+              checked={filters.states.some(e => e.value === state)}
               onChange={handleStateChange}
             />
             <label htmlFor={`state${state}`}>{state}</label>
@@ -129,7 +131,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           onChange={handleRevenueChange}
         >
           <option value="">All Revenue Bands</option>
-          {revenueBands.map((band) => (
+          {revenueBands.map(band => (
             <option key={band} value={band}>
               ${band}
             </option>
@@ -149,7 +151,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       >
         Reset
       </button>
-    </S.Panel>)
+    </S.Panel>
+  )
 }
 
 export default FilterPanel

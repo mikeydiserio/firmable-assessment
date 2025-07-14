@@ -25,9 +25,7 @@ export default antfu(
     },
 
     // Ignored paths
-    ignores: [
-      'migrations/**/*',
-    ],
+    ignores: ['migrations/**/*'],
   },
   // --- Next.js Specific Rules ---
   {
@@ -43,17 +41,12 @@ export default antfu(
   jsxA11y.flatConfigs.recommended,
   // --- Testing Rules ---
   {
-    files: [
-      '**/*.test.ts?(x)',
-    ],
+    files: ['**/*.test.ts?(x)'],
     ...jestDom.configs['flat/recommended'],
   },
   // --- E2E Testing Rules ---
   {
-    files: [
-      '**/*.spec.ts',
-      '**/*.e2e.ts',
-    ],
+    files: ['**/*.spec.ts', '**/*.e2e.ts'],
     ...playwright.configs['flat/recommended'],
   },
   // --- Storybook Rules ---
@@ -67,6 +60,7 @@ export default antfu(
       'style/eol-last': 'off',
       'style/no-tabs': 'off',
       'style/brace-style': ['error', '1tbs'], // Use the default brace style
+      'eslintperfectionist/sort-imports': 'warn', // Disable sorting of imports
       'ts/consistent-type-definitions': ['error', 'type'], // Use `type` instead of `interface`
       'react/prefer-destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
       'node/prefer-global/process': 'off', // Allow using `process.env`
