@@ -1,4 +1,5 @@
-import { createClient } from '@supabase/supabase-js'
+'use client'
+
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import ClientProviderWrapper from '../components/ClientProviderWrapper'
 import CompanyDetailModal from '../components/CompanyDetailModal/CompanyDetailModal'
@@ -15,12 +16,7 @@ import { contentData } from '../mocks/content'
 
 const STATES = contentData.states
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-export const supabase = createClient(supabaseUrl, supabaseKey)
-
-export const Page = () => {
+export default function Page() {
   const [filters, setFilters] = useState<IFilters>({
     searchTerm: '',
     industry: '',
@@ -32,24 +28,19 @@ export const Page = () => {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [sortBy, setSortBy] = useState<SortByOption>('name-asc')
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [_loading, setLoading] = useState<boolean>(false)
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
-
-  setSortBy('name-asc')
-  setCurrentPage(1)
-  setLoading(false)
 
   const itemsPerPage = 5
 
-  //  300ms debounce delay search term for suggestions and main search
+  // 300ms debounce delay search term for suggestions and main search
   const [debouncedSearchTerm, setDebouncedSearchTerm] =
     useState<string>(searchTerm)
 
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm)
-    }, 300) //
-
+    }, 300)
     return () => {
       clearTimeout(handler)
     }
@@ -145,11 +136,6 @@ export const Page = () => {
   //   return filteredAndSortedCompanies.slice(startIndex, endIndex)
   // }, [currentPage, filteredAndSortedCompanies, itemsPerPage])
 
-  // const handleSearchChange = useCallback((term: string) => {
-  //   setSearchTerm(term)
-  //   setCurrentPage(1) // Reset to first page on search
-  // }, [])
-
   const handleFilterChange = useCallback((newFilters: Partial<IFilters>) => {
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }))
   }, [])
@@ -159,7 +145,6 @@ export const Page = () => {
     setCurrentPage(1)
     setTimeout(() => {
       setLoading(false)
-      // Actual filtering happens in useMemo, so nothing explicit to do here except end loading
     }, 500)
   }, [])
 
@@ -182,7 +167,7 @@ export const Page = () => {
 
   const handleSortChange = useCallback((newSortBy: SortByOption) => {
     setSortBy(newSortBy)
-    setCurrentPage(1) // Reset to first page on sort change
+    setCurrentPage(1)
   }, [])
 
   const handlePageChange = useCallback((page: number) => {
@@ -217,7 +202,7 @@ export const Page = () => {
       <ClientProviderWrapper>
         <SearchBar
           onSelectSuggestion={handleSelectSuggestion}
-          placeholder="Try searching for a company using aN ABN"
+          placeholder="Try searching for a company using an ABN"
         />
         <S.Main>
           <FilterPanel
@@ -229,7 +214,6 @@ export const Page = () => {
 
           <div>
             <SearchResults
-              // companies={paginatedCompanies}
               query={searchTerm}
               sortBy={sortBy}
               onSortChange={handleSortChange}
@@ -250,5 +234,3 @@ export const Page = () => {
     </S.Page>
   )
 }
-
-export default Page

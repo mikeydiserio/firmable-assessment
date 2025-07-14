@@ -1,5 +1,5 @@
-import { useGetEntities } from '@/hooks/useGetEntities'
 import React from 'react'
+import { useGetEntities } from '../../hooks/useGetEntities'
 import { Entity, SortByOption } from '../../types/types'
 import EntityCard from '../EntityCard/EntityCard'
 import * as S from './SearchResults.styles'

@@ -54,10 +54,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
   const handleStateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target
+    const stateObj = { value, label: value }
     const updatedStates = checked
-      ? [...filters.states, value]
+      ? [...filters.states, stateObj]
       : filters.states.filter(state => state.value !== value)
-    // onFilterChange({ states: updatedStates })
+    onFilterChange({ states: updatedStates })
   }
 
   const handleRevenueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

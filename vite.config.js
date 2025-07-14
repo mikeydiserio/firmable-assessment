@@ -1,28 +1,40 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import * as path from 'node:path';
+import { defineConfig, mergeConfig } from 'vitest/config';
 
-export default defineConfig({
-  root: __dirname,
-  cacheDir: './node_modules/.vite/.',
+import { vitestBaseConfig } from './vitest.config.base.mjs';
 
-  server: {
-    port: 4200,
-    host: 'localhost',
-  },
+const vitestConfig = mergeConfig(
+  vitestBaseConfig,
 
-  preview: {
-    port: 4300,
-    host: 'localhost',
-  },
+  defineConfig({
+    root: import.meta.dirname,
 
-  plugins: [react(), nxViteTsPaths()],
+    test: {
+      coverage: {
+        exclude: [
+          'packages/website/src',
+          'packages/website-eslint/src',
+          'packages/rule-schema-to-typescript-types/src',
+          'packages/types/src',
+          'packages/ast-spec/src/**/fixtures',
+        ],
 
-  build: {
-    outDir: './dist',
-    reportCompressedSize: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
+        include: ['packages/*/src'],
+      },
+
+      dir: path.join(import.meta.dirname, 'packages'),
+      name: 'root',
+      root: import.meta.dirname,
+
+      workspace: [
+        'packages/*/vitest.config.mts',
+        '!packages/website/vitest.config.mts',
+        '!packages/website-eslint/vitest.config.mts',
+        '!packages/rule-schema-to-typescript-types/vitest.config.mts',
+        '!packages/types/vitest.config.mts',
+      ],
     },
-  },
-})
+  }),
+);
+
+export default vitestConfig;

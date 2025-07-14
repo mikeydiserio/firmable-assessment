@@ -1,18 +1,19 @@
 {
-	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"outDir": "../../dist/out-tsc",
-		"module": "commonjs",
-  	"types": [
-    	"@testing-library/jest-dom/vitest",
-    	"vitest/globals",
-			"vitest/importMeta",
-			"vite/client",
-			"node",
-			"vitest"
-		]
-	},
-"include": [
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "module": "es2015",
+    "composite": true,
+    "types": [
+      "@testing-library/jest-dom/vitest",
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node",
+      "vitest"
+    ]
+  },
+  "include": [
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",

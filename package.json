@@ -12,9 +12,9 @@
     "monorepo:install": "pnpm install",
     "reset": "lerna clean --y && pnpm store prune && nx reset && pnpm monorepo:install",
     "start:graph": "nx graph",
-    "build": "nx build",
-    "test": "nx test",
-    "lint": "nx workspace-lint && nx lint",
+    "build": "nx build /apps",
+    "test": "nx run-many -t test",
+    "lint": "nx run-many -t lint",
     "e2e": "nx e2e",
     "affected:apps": "nx affected:apps",
     "affected:packages": "nx affected:packages",
@@ -30,13 +30,10 @@
     "@eslint/compat": "^1.3.1",
     "@next/bundle-analyzer": "^15.3.5",
     "@next/eslint-plugin-next": "^15.3.5",
-    "@nx/react": "^21.2.3",
     "@nx/next": "^21.2.3",
-    "@supabase/ssr": "latest",
-    "@supabase/supabase-js": "latest",
-    "class-variance-authority": "^0.7.1",
-    "document-register-element": "1.13.1",
+    "@nx/react": "^21.2.3",
     "eslint-plugin-format": "^1.0.1",
+    "eslint-plugin-internal": "0.0.1-security",
     "eslint-plugin-jest-dom": "^5.5.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-playwright": "^2.2.0",
@@ -54,14 +51,15 @@
     "semver": "^7.7.2",
     "styled-components": "^6.1.19",
     "ts-node": "^10.9.2",
-    "typescript-eslint": "^8.36.0",
-    "tslib": "^2.8.1"
+    "tslib": "^2.8.1",
+    "typescript-eslint": "^8.36.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.2",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
+    "@eslint/compat": "^1.2.4",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.31.0",
-    "@jest/globals": "^30.0.4",
     "@nx/devkit": "^21.2.3",
     "@nx/eslint": "21.2.3",
     "@nx/eslint-plugin": "^21.2.3",
@@ -75,37 +73,103 @@
     "@nx/web": "21.2.3",
     "@nx/workspace": "^21.2.3",
     "@playwright/test": "^1.54.1",
+    "@swc/core": "^1.4.12",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
+    "@types/debug": "^4.1.12",
+    "@types/eslint-plugin-jsx-a11y": "^6.10.0",
     "@types/jest": "^30.0.0",
+    "@types/natural-compare": "^1.4.3",
     "@types/node": "^20.19.7",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@types/semver": "^7.5.8",
+    "@types/yargs": "^17.0.32",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "@vitejs/plugin-react": "^4.2.0",
     "@vitest/coverage-v8": "^3.0.5",
+    "@vitest/eslint-plugin": "^1.1.44",
     "@vitest/ui": "^3.0.0",
     "autoprefixer": "^10.4.20",
     "babel-jest": "^30.0.4",
     "babel-plugin-styled-components": "^2.1.4",
+    "console-fail-test": "^0.5.0",
+    "cross-fetch": "^4.0.0",
+    "cspell": "^9.0.0",
     "eslint": "^9.31.0",
     "eslint-config-next": "15.3.4",
+    "eslint-plugin-eslint-plugin": "^6.3.1",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jest": "^29.0.1",
+    "eslint-plugin-jsdoc": "^50.5.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-next": "^0.0.0",
+    "eslint-plugin-perfectionist": "^4.12.3",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-regexp": "^2.7.0",
+    "eslint-plugin-unicorn": "^59.0.0",
+    "execa": "7.2.0",
+    "globals": "^16.0.0",
     "jest-environment-jsdom": "^30.0.4",
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
     "lerna": "8.2.3",
     "npm-run-all": "^4.1.5",
     "nx": "21.2.3",
-    "prettier": "^2.6.2",
+    "prettier": "^3.6.2",
+    "rimraf": "^5.0.5",
+    "semver": "7.7.0",
     "supabase": "^2.30.4",
+    "tsx": "*",
     "typescript": "^5.8.3",
     "vite": "^6.0.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.0",
     "vitest-canvas-mock": "^0.3.3"
+  },
+  "nx": {
+    "name": "repo",
+    "includedScripts": [
+      "generate-configs",
+      "generate-lib",
+      "generate-sponsors"
+    ],
+    "targets": {
+      "generate-configs": {
+        "dependsOn": [
+          "eslint-plugin:build"
+        ]
+      },
+      "generate-lib": {
+        "dependsOn": [
+          "typescript-eslint:build",
+          "eslint-plugin-internal:build"
+        ]
+      },
+      "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
+      "typecheck": {
+        "command": "tsc -b tsconfig.repo-config-files.json",
+        "dependsOn": [
+          "types:copy-ast-spec"
+        ],
+        "outputs": [
+          "{workspaceRoot}/dist"
+        ],
+        "cache": true
+      },
+      "lint": {
+        "command": "eslint",
+        "options": {
+          "cache": true,
+          "ignore-pattern": "packages"
+        },
+        "cache": false
+      },
+      "clean": {
+        "command": "rimraf dist/ coverage/ .eslintcache"
+      }
+    }
   }
 }
