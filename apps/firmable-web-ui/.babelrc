@@ -1,0 +1,13 @@
+{
+	"extends": "../../babel.config.js",
+	"presets": [
+		[
+			"@nx/react",
+			{
+				"runtime": "automatic"
+			}
+		],
+		["next/babel"]
+	],
+	"plugins": [["styled-components", { "ssr": true }]]
+}

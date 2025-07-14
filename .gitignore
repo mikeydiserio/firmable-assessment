@@ -49,3 +49,7 @@ next-env.d.ts
 
 ./supabase-python/csv's'data
 *.xml
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
+/false

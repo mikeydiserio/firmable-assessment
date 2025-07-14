@@ -11,8 +11,7 @@ export default antfu(
     typescript: true,
 
     // Configuration preferences
-    lessOpinionated: false,
-    preferGlobal: false,
+    lessOpinionated: true,
     isInEditor: false,
 
     // Code style
@@ -63,6 +62,10 @@ export default antfu(
   {
     rules: {
       'antfu/no-top-level-await': 'off', // Allow top-level await
+      'jsonc/indent': 'off',
+      'jsonc/sort-keys': 'off', // Disable sorting of keys in JSON files
+      'style/eol-last': 'off',
+      'style/no-tabs': 'off',
       'style/brace-style': ['error', '1tbs'], // Use the default brace style
       'ts/consistent-type-definitions': ['error', 'type'], // Use `type` instead of `interface`
       'react/prefer-destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
