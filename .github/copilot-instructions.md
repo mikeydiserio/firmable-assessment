@@ -238,8 +238,19 @@ SUPABASE_SERVICE_KEY="your-service-key"
 - Search components have suggestion dropdowns with debounced API calls
 - Entity cards are clickable with `onViewDetails` callback pattern
 
+### Supabase Database Schema
+
+When working with entity data, remember the relational structure:
+- Primary entity in `entities` table (ABN as key)
+- Related tables: `business_names`, `dgr_funds`, `entity_types`, `locations`  
+- Use joined queries: `*,business_names(*),dgr_funds(*),entity_types(*),locations(*)`
+
 ## Key Files to Reference
 
+- `nx.json` - Monorepo configuration, task defaults, and caching rules
+- `pnpm-workspace.yaml` - Workspace package discovery and management
+- `lerna.json` - Publishing configuration with pnpm integration
+- `apps/firmable-web-ui/project.json` - Next.js app configuration and targets
 - `apps/firmable-web-ui/src/types/types.ts` - Core type definitions
-- `apps/firmable-web-ui/src/components/EntityCard/` - Main display component pattern
-- `nx.json` - Monorepo configuration and build targets
+- `apps/firmable-web-ui/src/components/EntityCard/` - Component pattern example
+- `.github/instructions/nx.instructions.md` - Nx-specific AI guidance (auto-generated)
