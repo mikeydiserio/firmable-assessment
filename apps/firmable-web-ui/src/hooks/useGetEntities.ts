@@ -29,8 +29,9 @@ export function useGetEntities() {
       }
     }
 
-    fetchEntities()
-  }, []) // Empty dependency array means this runs once on mount
+  },
+
+    []) // Empty dependency array means this runs once on mount
 
   return { entities, isLoading, error }
 }

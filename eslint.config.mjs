@@ -12,6 +12,8 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import url from 'node:url'
 import tseslint from 'typescript-eslint'
 
+
+
 // @//ts-check
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 const compat = new FlatCompat({ baseDirectory: __dirname })
@@ -24,6 +26,8 @@ const restrictNamedDeclarations = {
 
 export default tseslint.config(
   // register all of the plugins up-front
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   {
     name: 'register-all-plugins',
     // note - intentionally uses computed syntax to make it easy to sort the keys
@@ -267,7 +271,7 @@ export default tseslint.config(
     files: ['**/*.js'],
     name: 'js-files-only',
     rules: {
-      // turn off rules that don't apply to JS code
+    // turn off rules that don't apply to JS code
       '@typescript-eslint/explicit-function-return-type': 'off',
     },
   },
@@ -323,18 +327,7 @@ export default tseslint.config(
     },
   },
 
-  // plugin rule tests
-  {
-    files: [
-      'packages/eslint-plugin-internal/tests/rules/**/*.test.?(m|c)ts?(x)',
-      'packages/eslint-plugin/tests/rules/**/*.test.?(m|c)ts?(x)',
-      'packages/eslint-plugin/tests/eslint-rules/**/*.test.?(m|c)ts?(x)',
-    ],
-    name: 'eslint-plugin-and-eslint-plugin-internal/test-files/rules',
-    rules: {
-      '@typescript-eslint/internal/plugin-test-formatting': 'error',
-    },
-  },
+
 
   //
   // tools and tests

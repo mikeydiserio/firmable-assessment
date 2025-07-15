@@ -1,40 +1,43 @@
-import * as path from 'node:path';
-import { defineConfig, mergeConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineConfig } from 'vitest/config';
 
-import { vitestBaseConfig } from './vitest.config.base.mjs';
-
-const vitestConfig = mergeConfig(
-  vitestBaseConfig,
-
-  defineConfig({
-    root: import.meta.dirname,
-
-    test: {
-      coverage: {
-        exclude: [
-          'packages/website/src',
-          'packages/website-eslint/src',
-          'packages/rule-schema-to-typescript-types/src',
-          'packages/types/src',
-          'packages/ast-spec/src/**/fixtures',
-        ],
-
-        include: ['packages/*/src'],
+export default defineConfig({
+  plugins: [
+    react({
+      babel: {
+        plugins: [['babel-plugin-react-compiler']],
       },
-
-      dir: path.join(import.meta.dirname, 'packages'),
-      name: 'root',
-      root: import.meta.dirname,
-
-      workspace: [
-        'packages/*/vitest.config.mts',
-        '!packages/website/vitest.config.mts',
-        '!packages/website-eslint/vitest.config.mts',
-        '!packages/rule-schema-to-typescript-types/vitest.config.mts',
-        '!packages/types/vitest.config.mts',
-      ],
+    }),
+    tsconfigPaths(),
+  ],
+  test: {
+    globals: true,
+    restoreMocks: true,
+    unstubGlobals: true,
+    passWithNoTests: true,
+    environment: 'jsdom',
+    reporters: ['default', 'html'],
+    outputFile: 'reports/vitest.html',
+    setupFiles: ['./vitest.setup.ts'],
+    coverage: {
+      provider: 'c8',
+      reportsDirectory: 'coverage',
     },
-  }),
-);
-
-export default vitestConfig;
+    // New projects-based workspace configuration
+    projects: [
+      {
+        name: 'firmable-web-ui',
+        root: './apps/firmable-web-ui',
+        setupFiles: ['./apps/firmable-web-ui/vitest.setup.ts'],
+        environment: 'happy-dom',
+      },
+      // @TODO Packages
+      // {
+      //   name: 'shared-lib',
+      //   root: './libs/shared',
+      //   environment: 'node',
+      // }
+    ]
+  },
+});

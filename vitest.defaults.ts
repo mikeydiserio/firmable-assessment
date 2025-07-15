@@ -1,9 +1,12 @@
-import type { ViteUserConfig } from 'vitest/config';
 
 import { coverageConfigDefaults } from 'vitest/config';
 
 export const vitestBaseConfig = {
   test: {
+    globals: true,
+    restoreMocks: true,
+    unstubGlobals: true,
+    passWithNoTests: true,
     coverage: {
       exclude: [...coverageConfigDefaults.exclude, '**/fixtures/'],
       extension: ['.ts', '.tsx', '.js', '.jsx'],
@@ -14,7 +17,6 @@ export const vitestBaseConfig = {
         : [['lcov']],
     },
 
-    globals: true,
     include: ['**/*.test.?(c|m)ts?(x)'],
 
     reporters: process.env.GITHUB_ACTIONS
@@ -31,4 +33,4 @@ export const vitestBaseConfig = {
 
     watch: false,
   },
-} as const satisfies ViteUserConfig;
+}

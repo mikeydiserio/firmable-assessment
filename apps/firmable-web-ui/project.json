@@ -1,15 +1,12 @@
 {
   "name": "firmable-web-ui",
-  "sourceRoot": "apps/firmable-web-ui/src",
-  "projectType": "application",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/firmable-web-ui/src",
+  "root": "apps/firmable-web-ui",
+  "projectType": "application",
   "tags": [
     "type:app",
     "scope:firmable-web-ui"
-  ],
-  "implicitDependencies": [
-    "shared-assets",
-    "shared-styles"
   ],
   "generators": {
     "@nx/workspace:component": {
@@ -32,6 +29,7 @@
       }
     },
     "build": {
+      "cache": true,
       "executor": "@nx/next:build",
       "outputs": [
         "{workspaceRoot}/dist/apps/{projectRoot}"
@@ -61,12 +59,10 @@
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "executor": "@nx/vite:test",
       "options": {
-        "jestConfig": "apps/firmable-web-ui/jest.config.ts"
+        "config": "../../vitest.config.ts",
+        "passWithNoTests": true
       }
     }
   }

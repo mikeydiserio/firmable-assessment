@@ -32,5 +32,12 @@ export const contentData = {
     { value: '20m-100m', label: '$20M - $100M' },
     { value: '100m+', label: '$100M+' },
   ],
-  filterOptions: [],
+  sortOptions: [
+  { value: 'name-asc', label: 'Name (A-Z)' },
+  { value: 'name-desc', label: 'Name (Z-A)' },
+  { value: 'revenue-asc', label: 'Revenue (Low-High)' },
+  { value: 'revenue-desc', label: 'Revenue (High-Low)' },
+  { value: 'employees-asc', label: 'Employees (Small-Large)' },
+  { value: 'employees-desc', label: 'Employees (Large-Small)' },
+  ],
 }

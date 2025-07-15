@@ -1,236 +1,158 @@
-'use client'
+import { useEffect, useState } from 'react'
+import { Entity } from '../types/types'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import ClientProviderWrapper from '../components/ClientProviderWrapper'
-import CompanyDetailModal from '../components/CompanyDetailModal/CompanyDetailModal'
-import FilterPanel from '../components/FilterPanel/FilterPanel'
-import Pagination from '../components/Pagination/Pagination'
-import SearchBar from '../components/SearchBar/SearchBar'
-import SearchResults from '../components/SearchResults/SearchResults'
-import { SAMPLE_COMPANIES } from '../mocks/companies'
-import type { Company, IFilters, SortByOption } from '../types/types'
-import { getEmployeeCountRange, revenueBandToValue } from '../utils/helpers'
-import * as S from './page.styles'
+async function getEntityData() {
+  // NOTE: In a client-side only environment like this preview, process.env is not available.
+  // Replace these with your actual Supabase credentials.
+  const supabaseUrl = 'https://<YOUR_PROJECT_REF>.supabase.co'
+  const supabaseKey = '<YOUR_ANON_KEY>'
 
-import { contentData } from '../mocks/content'
+  if (!supabaseUrl.includes('<') && !supabaseKey.includes('<')) {
+    // The query that includes business_names.
+    const selectQuery =
+      '*,business_names(*),dgr_funds(*),entity_types(*),locations(*)'
+    const fullUrl = `${supabaseUrl}/rest/v1/entities?select=${selectQuery}`
 
-const STATES = contentData.states
+    try {
+      const response = await fetch(fullUrl, {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      })
 
-export default function Page() {
-  const [filters, setFilters] = useState<IFilters>({
-    searchTerm: '',
-    industry: '',
-    employeeRange: 4,
-    states: STATES,
-    revenueBand: '',
-  })
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('Failed to fetch data from Supabase:', errorText)
+        throw new Error(`Failed to fetch data. Status: ${response.status}`)
+      }
 
-  const [searchTerm, setSearchTerm] = useState<string>('')
-  const [sortBy, setSortBy] = useState<SortByOption>('name-asc')
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [_loading, setLoading] = useState<boolean>(false)
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error('An error occurred during the fetch operation:', error)
+      throw error // Re-throw the error to be caught by the calling function
+    }
+  } else {
+    console.warn(
+      'Supabase URL and Key are not set. Please replace the placeholder values.',
+    )
+    return []
+  }
+}
 
-  const itemsPerPage = 5
-
-  // 300ms debounce delay search term for suggestions and main search
-  const [debouncedSearchTerm, setDebouncedSearchTerm] =
-    useState<string>(searchTerm)
+export default function HomePage() {
+  const [entities, setEntities] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm)
-    }, 300)
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [searchTerm])
-
-  const allCompanies: Company[] = useMemo(() => SAMPLE_COMPANIES, [])
-
-  const filteredAndSortedCompanies = useMemo(() => {
-    let currentCompanies = [...allCompanies]
-
-    if (debouncedSearchTerm) {
-      const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase()
-      currentCompanies = currentCompanies.filter(
-        company =>
-          company.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-          company.abn.includes(lowerCaseSearchTerm) ||
-          company.industry.toLowerCase().includes(lowerCaseSearchTerm) ||
-          company.address.suburb.toLowerCase().includes(lowerCaseSearchTerm) ||
-          company.address.state.toLowerCase().includes(lowerCaseSearchTerm),
-      )
-    }
-
-    // Apply filters from FilterPanel
-    currentCompanies = currentCompanies.filter(company => {
-      // Industry filter
-      const matchesIndustry =
-        filters.industry === '' || company.industry === filters.industry
-
-      // Employee size filter
-      const [minEmployees, maxEmployees] = getEmployeeCountRange(
-        filters.employeeRange,
-      )
-      const matchesEmployeeSize =
-        company.employeeCount >= minEmployees &&
-        company.employeeCount <= maxEmployees
-
-      // State filter
-      const matchesState =
-        filters.states.length === 0 ||
-        filters.states.some(
-          stateObj => stateObj.value === company.address.state,
-        )
-
-      // Revenue band filter
-      const matchesRevenueBand =
-        filters.revenueBand === '' ||
-        company.revenueBand === filters.revenueBand
-
-      return (
-        matchesIndustry &&
-        matchesEmployeeSize &&
-        matchesState &&
-        matchesRevenueBand
-      )
-    })
-
-    currentCompanies.sort((a, b) => {
-      switch (sortBy) {
-        case 'name-asc':
-          return a.name.localeCompare(b.name)
-        case 'name-desc':
-          return b.name.localeCompare(a.name)
-        case 'revenue-asc':
-          return (
-            revenueBandToValue(a.revenueBand) -
-            revenueBandToValue(b.revenueBand)
-          )
-        case 'revenue-desc':
-          return (
-            revenueBandToValue(b.revenueBand) -
-            revenueBandToValue(a.revenueBand)
-          )
-        case 'employees-asc':
-          return a.employeeCount - b.employeeCount
-        case 'employees-desc':
-          return b.employeeCount - a.employeeCount
-        default:
-          return 0
+    const loadData = async () => {
+      try {
+        setLoading(true)
+        const data = await getEntityData()
+        setEntities(data)
+        setError(null)
+      } catch (err) {
+        setError(err.message || 'An unknown error occurred')
+        setEntities([])
+      } finally {
+        setLoading(false)
       }
-    })
+    }
+    loadData()
+  }, []) // The empty dependency array ensures this effect runs only once on mount.
 
-    return currentCompanies
-  }, [allCompanies, debouncedSearchTerm, filters, sortBy])
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
-  const totalPages = Math.ceil(filteredAndSortedCompanies.length / itemsPerPage)
-
-  // const paginatedCompanies = useMemo(() => {
-  //   const startIndex = (currentPage - 1) * itemsPerPage
-  //   const endIndex = Math.min(
-  //     startIndex + itemsPerPage,
-  //     filteredAndSortedCompanies.length,
-  //   )
-  //   return filteredAndSortedCompanies.slice(startIndex, endIndex)
-  // }, [currentPage, filteredAndSortedCompanies, itemsPerPage])
-
-  const handleFilterChange = useCallback((newFilters: Partial<IFilters>) => {
-    setFilters(prevFilters => ({ ...prevFilters, ...newFilters }))
-  }, [])
-
-  const handleApplyFilters = useCallback(() => {
-    setLoading(true)
-    setCurrentPage(1)
-    setTimeout(() => {
-      setLoading(false)
-    }, 500)
-  }, [])
-
-  const handleResetFilters = useCallback(() => {
-    setFilters({
-      searchTerm: '',
-      industry: '',
-      employeeRange: 4,
-      states: contentData.states,
-      revenueBand: '',
-    })
-    setSearchTerm('')
-    setSortBy('name-asc')
-    setCurrentPage(1)
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 500)
-  }, [])
-
-  const handleSortChange = useCallback((newSortBy: SortByOption) => {
-    setSortBy(newSortBy)
-    setCurrentPage(1)
-  }, [])
-
-  const handlePageChange = useCallback((page: number) => {
-    setCurrentPage(page)
-  }, [])
-
-  const handleViewDetails = useCallback(
-    (companyId: string) => {
-      const company = allCompanies.find(
-        c => c.id === Number.parseInt(companyId),
-      )
-      setSelectedCompany(company || null)
-    },
-    [allCompanies],
-  )
-
-  const handleCloseModal = useCallback(() => {
-    setSelectedCompany(null)
-  }, [])
-
-  const handleSelectSuggestion = useCallback(
-    (companyName: string) => {
-      setSearchTerm(companyName)
-      const company = allCompanies.find(c => c.name === companyName)
-      setSelectedCompany(company || null)
-    },
-    [allCompanies],
-  )
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
-    <S.Page>
-      <ClientProviderWrapper>
-        <SearchBar
-          onSelectSuggestion={handleSelectSuggestion}
-          placeholder="Try searching for a company using an ABN"
-        />
-        <S.Main>
-          <FilterPanel
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            onApplyFilters={handleApplyFilters}
-            onResetFilters={handleResetFilters}
-          />
+    <div>
+      <main>
+        <header>
+          <h1>Entity Data Explorer</h1>
+          <p>
+            Fetched from Supabase using a single, optimized network request.
+          </p>
+        </header>
 
+        {entities && entities.length > 0 ? (
           <div>
-            <SearchResults
-              query={searchTerm}
-              sortBy={sortBy}
-              onSortChange={handleSortChange}
-              onViewDetails={handleViewDetails}
-            />
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
+            {entities.map((entity: Entity) => (
+              <div key={entity.abn}>
+                <div>
+                  <div>
+                    <h2>{entity.legal_name}</h2>
+                    <p>ABN: {entity.abn}</p>
+                  </div>
+                  <span>{entity.abn_status}</span>
+                </div>
+
+                <div>
+                  <p>
+                    <strong>GST Status:</strong> {entity.gst_status}
+                  </p>
+                  {entity.entity_types && (
+                    <p>
+                      <strong>Entity Type:</strong>{' '}
+                      {entity.entity_types.description}
+                    </p>
+                  )}
+                  {entity.locations && (
+                    <p>
+                      <strong>Location:</strong> {entity.locations.state},{' '}
+                      {entity.locations.postcode}
+                    </p>
+                  )}
+                  <p>
+                    <strong>Last Updated:</strong>{' '}
+                    {new Date(entity.last_updated).toLocaleDateString()}
+                  </p>
+                </div>
+
+                {/* Render Business Names */}
+                {entity.business_names && entity.business_names.length > 0 && (
+                  <div>
+                    <h5>Business Names:</h5>
+                    <ul>
+                      {entity.business_names.map(bn => (
+                        <li key={bn.id}>
+                          {bn.name} ({bn.type})
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Render DGR Funds */}
+                {entity.dgr_funds && entity.dgr_funds.length > 0 && (
+                  <div>
+                    <h5>DGR Funds:</h5>
+                    <ul>
+                      {entity.dgr_funds.map(fund => (
+                        <li key={fund.id}>{fund.fund_name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        </S.Main>
-        <CompanyDetailModal
-          company={selectedCompany}
-          onClose={handleCloseModal}
-        />
-      </ClientProviderWrapper>
-    </S.Page>
+        ) : (
+          <div>
+            <p>No data found or failed to load.</p>
+            <p>
+              Please check your Supabase connection and ensure the tables
+              contain data.
+            </p>
+          </div>
+        )}
+      </main>
+    </div>
   )
 }

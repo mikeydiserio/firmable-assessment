@@ -1,6 +1,35 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/data/*": [
+        "./src/data/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
+      "@/public/*": [
+        "./public/*"
+      ],
+      "@/types/*": [
+        "./src/types/*"
+      ],
+      "@/mocks/*": [
+        "./src/mocks/*"
+      ],
+      "@/hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@/utils/*": [
+        "./src/utils/*"
+      ]
+    },
     "types": [
       "node",
       "jest"
@@ -11,5 +40,4 @@
     ".next/types/**/*.ts"
   ],
   "files": [],
-
 }
