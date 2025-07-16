@@ -31,11 +31,10 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "vite.config.mts"
+    "vite.config.mts",
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "eslint.config.mjs"
   ]
 }

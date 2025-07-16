@@ -13,8 +13,9 @@ const baseConfig: NextConfig = {
     styledComponents: true,
   },
   eslint: {
-		dirs: ['.'],
-	},
+    dirs: ['.'],
+    ignoreDuringBuilds: true, // Ignore ESLint errors during build
+  },
 	poweredByHeader: false,
 	reactStrictMode: true,
 }

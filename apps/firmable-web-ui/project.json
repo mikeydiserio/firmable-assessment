@@ -8,11 +8,19 @@
   ],
   "targets": {
     "dev": {
-      "executor": "@nx/next:dev",
+      "executor": "@nx/next:serve",
       "defaultConfiguration": "development",
       "options": {
         "port": 3000,
         "turbo": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "firmable-web-ui:build:development"
+        },
+        "production": {
+          "buildTarget": "firmable-web-ui:build:production"
+        }
       }
     },
     "build": {
@@ -23,14 +31,14 @@
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/firmable-web-ui"
-      }
-    },
-    "start": {
-      "executor": "@nx/next:server",
-      "defaultConfiguration": "production",
-      "options": {
-        "buildTarget": "firmable-web-ui:build",
-        "port": 3000
+      },
+      "configurations": {
+        "development": {
+          "outputPath": "dist/apps/firmable-web-ui"
+        },
+        "production": {
+          "outputPath": "dist/apps/firmable-web-ui"
+        }
       }
     },
     "lint": {

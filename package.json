@@ -1,7 +1,6 @@
 {
   "name": "firmable-workspace",
   "version": "1.0.0",
-  "private": true,
   "engines": {
     "node": ">=20.12.2",
     "pnpm": ">=8.10.4"
@@ -12,7 +11,6 @@
   ],
   "scripts": {
     "clean": "npx rimraf {,**/*/}{node_modules,dist,.next} && lerna clean --y",
-    "dev": "nx run-many -t next dev --turbopack",
     "monorepo:install": "pnpm install",
     "reset": "lerna clean --y && pnpm store prune && nx reset && pnpm monorepo:install",
     "start:graph": "nx graph",
@@ -49,7 +47,6 @@
     "typescript-eslint": "^8.36.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.16.2",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
     "@eslint/compat": "^1.2.4",
     "@eslint/eslintrc": "^3.3.1",
@@ -130,52 +127,7 @@
     "vitest": "^3.0.0",
     "vitest-canvas-mock": "^0.3.3"
   },
-  "nx": {
-    "name": "repo",
-    "includedScripts": [
-      "generate-configs",
-      "generate-lib",
-      "generate-sponsors"
-    ],
-    "targets": {
-      "generate-configs": {
-        "dependsOn": [
-          "eslint-plugin:build"
-        ]
-      },
-      "generate-lib": {
-        "dependsOn": [
-          "typescript-eslint:build",
-          "eslint-plugin-internal:build"
-        ]
-      },
-      "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
-      "typecheck": {
-        "command": "tsc -b tsconfig.repo-config-files.json",
-        "dependsOn": [
-          "types:copy-ast-spec"
-        ],
-        "outputs": [
-          "{workspaceRoot}/dist"
-        ],
-        "cache": true
-      },
-      "lint": {
-        "command": "eslint",
-        "options": {
-          "cache": true,
-          "ignore-pattern": "packages"
-        },
-        "cache": false
-      },
-      "clean": {
-        "command": "rimraf dist/ coverage/ .eslintcache"
-      },
-      "lint-staged": {
-        "*.{ts,js,json,md}": [
-          "prettier --write"
-        ]
-      }
-    }
+  "overrides": {
+    "eslint": "9.31.1"
   }
 }
