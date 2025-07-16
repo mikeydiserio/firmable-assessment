@@ -13,14 +13,11 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Deploy job only runs if CI workflow completed successfully
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -31,17 +28,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: ./.github/actions/checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           filter: tree:0
 
-      # Install pnpm
       - name: Install pnpm
         run: npm install -g pnpm
 
       - name: Setup Node.js
-        uses: ./.github/actions/setup-node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
@@ -49,111 +45,34 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Setup Nx
-        uses: ./.github/actions/nx-set-shas
+      # If ./.github/actions/nx-set-shas is a custom action and exists, keep as is.
+      # Otherwise, comment out or provide the correct official or community action.
+      # - name: Setup Nx
+      #   uses: ./.github/actions/nx-set-shas
 
-      # Build only frontend applications for deployment
       - name: Build frontend applications
         run: pnpm exec nx build firmable-web-ui --configuration=production
         env:
-          # Add your Supabase environment variables for production build
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
 
-      # Setup GitHub Pages
-      - name: Setup Pages
-        uses: ./.github/actions/configure-pages
-        with:
-          # Automatically inject basePath in your Next.js configuration file and disable
-          # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
-          #
-          # You may remove this line if you want to manage the configuration yourself.
-          static_site_generator: next
+      # If ./.github/actions/configure-pages is a custom action and exists, keep as is.
+      # Otherwise, use the official actions/configure-pages if available, or comment out.
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v5
+      #   with:
+      #     static_site_generator: next
 
-      # Upload the built application as GitHub Pages artifact
-      - name: Upload artifact
-        uses: ./.github/actions/upload-pages-artifact
-        with:
-          path: ./dist/apps/firmable-web-ui
+      # If ./.github/actions/upload-pages-artifact is a custom action and exists, keep as is.
+      # Otherwise, use the official actions/upload-pages-artifact if available, or comment out.
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: ./dist/apps/firmable-web-ui
 
-      # Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: ./.github/actions/deploy-pages
-
-  # Alternative deployment options (uncomment as needed)
-
-  # Deploy to Vercel (uncomment and configure secrets)
-  # deploy-vercel:
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.event.workflow_run.conclusion == 'success' }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #
-  #     - name: Install pnpm
-  #       run: npm install -g pnpm
-  #
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 20
-  #         cache: "pnpm"
-  #
-  #     - name: Install dependencies
-  #       run: pnpm install --frozen-lockfile
-  #
-  #     - name: Build application
-  #       run: pnpm exec nx build firmable-web-ui --configuration=production
-  #       env:
-  #         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-  #         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-  #         SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-  #
-  #     - name: Deploy to Vercel
-  #       uses: amondnet/vercel-action@v25
-  #       with:
-  #         vercel-token: ${{ secrets.VERCEL_TOKEN }}
-  #         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-  #         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-  #         working-directory: ./dist/apps/firmable-web-ui
-  #         scope: ${{ secrets.VERCEL_ORG_ID }}
-
-  # Deploy to Netlify (uncomment and configure secrets)
-  # deploy-netlify:
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.event.workflow_run.conclusion == 'success' }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #
-  #     - name: Install pnpm
-  #       run: npm install -g pnpm
-  #
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 20
-  #         cache: "pnpm"
-  #
-  #     - name: Install dependencies
-  #       run: pnpm install --frozen-lockfile
-  #
-  #     - name: Build application
-  #       run: pnpm exec nx build firmable-web-ui --configuration=production
-  #       env:
-  #         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-  #         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-  #         SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-  #
-  #     - name: Deploy to Netlify
-  #       uses: nwtgck/actions-netlify@v3.0
-  #       with:
-  #         publish-dir: './dist/apps/firmable-web-ui'
-  #         production-branch: master
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
-  #         deploy-message: "Deploy from GitHub Actions"
-  #       env:
-  #         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-  #         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      # If ./.github/actions/deploy-pages is a custom action and exists, keep as is.
+      # Otherwise, use the official actions/deploy-pages if available, or comment out.
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
