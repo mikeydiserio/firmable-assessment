@@ -64,6 +64,9 @@ This project uses GitHub Actions for CI/CD and Nx Cloud for distributed task exe
 Supabase Integration
 The project includes Supabase integration for backend services with server-side rendering support.
 
+
+SPECIAL PLACE IN HELL..
+
 Bundle Analysis
 To analyze bundle size:
 
