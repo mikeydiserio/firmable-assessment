@@ -1,7 +1,0 @@
-name: 'Configure GitHub Pages'
-description: 'Configures GitHub Pages using the official action'
-runs:
-  using: 'composite'
-  steps:
-    - name: Configure GitHub Pages
-      uses: actions/configure-pages@v5.0.0
