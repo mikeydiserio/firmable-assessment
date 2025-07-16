@@ -21,7 +21,9 @@
 /build
 .nx
 .next
-
+dist
+./dist
+/dist
 
 # misc
 .DS_Store
@@ -56,4 +58,3 @@ next-env.d.ts
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 /false
-*.json

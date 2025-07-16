@@ -1,5 +1,4 @@
-// components/FilterPanel.tsx
-/** @jsxImportSource @emotion/react */
+
 import React from 'react'
 import { IFilters } from '../../types/types'
 import * as S from './FilterPanel.styles'

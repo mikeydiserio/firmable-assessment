@@ -1,5 +1,4 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "workspaceLayout": {
     "libsDir": "packages",
     "appsDir": "apps"
@@ -15,7 +14,7 @@
       "!{projectRoot}/eslint.config.mjs",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/vite.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
@@ -48,43 +47,74 @@
         "testTargetName": "test",
         "typecheckTargetName": "vite:typecheck"
       }
-    }
-  ],
-  "targetDefaults": {
-    "build": {
-      "inputs": [
-        "^production",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tsconfig.base.json",
-        "{workspaceRoot}/tsconfig.json"
-      ]
     },
-    "lint": {
-      "cache": false,
-      "dependsOn": [
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
-      ],
+    {
+      "plugin": "@nx/next/plugin",
       "options": {
-        "cwd": "{workspaceRoot}",
-        "config": "{workspaceRoot}/eslint.config.mjs",
-        "args": [
-          "{projectRoot}"
-        ]
+        "startTargetName": "start",
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "serveStaticTargetName": "serve-static",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
       }
     },
-    "test": {
-      "dependsOn": [
-        "^build"
-      ],
+    {
+      "plugin": "@nx/playwright/plugin",
       "options": {
-        "config": "vitest.config.mts"
+        "targetName": "e2e"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
       },
-      "outputs": [
-        "{projectRoot}/coverage"
-      ]
+      "targetDefaults": {
+        "build": {
+          "inputs": [
+            "^production",
+            "{workspaceRoot}/.eslintrc.json",
+            "{workspaceRoot}/eslint.config.mjs",
+            "{workspaceRoot}/tsconfig.base.json",
+            "{workspaceRoot}/tsconfig.json"
+          ]
+        },
+        "lint": {
+          "cache": false,
+          "dependsOn": [
+            "eslint-plugin-internal:build",
+            "typescript-eslint:build"
+          ],
+          "options": {
+            "cwd": "{workspaceRoot}",
+            "config": "{workspaceRoot}/eslint.config.mjs",
+            "args": [
+              "{projectRoot}"
+            ]
+          }
+        },
+        "test": {
+          "dependsOn": [
+            "^build"
+          ],
+          "options": {
+            "config": "vitest.config.mts"
+          },
+          "outputs": [
+            "{projectRoot}/coverage"
+          ]
+        }
+      },
+      "generators": {
+        "@nx/next": {
+          "application": {
+            "style": "styled-components",
+            "linter": "eslint"
+          }
+        }
+      },
+      "nxCloudId": "68751ee5d4eccd26fa54a2f7",
     }
-  },
-  "nxCloudId": "68751ee5d4eccd26fa54a2f7"
+  ]
 }

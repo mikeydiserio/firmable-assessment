@@ -1,17 +1,6 @@
-// This component is designed to be a Server Component in a Next.js 15 App Router.
-
-// --- Instructions for Setup ---
-// 1. Create a file named `.env.local` in the root of your project.
-// 2. Add your Supabase credentials to this file. It's crucial for security.
-//
-//    NEXT_PUBLIC_SUPABASE_URL="https://<YOUR_PROJECT_REF>.supabase.co"
-//    NEXT_PUBLIC_SUPABASE_ANON_KEY="<YOUR_ANON_KEY>"
-//
-
 import React, { useEffect, useState } from 'react'
 import { Entity } from '../../types/types'
 
-// This async function fetches the data on the server before rendering the page.
 async function getEntityData() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -53,7 +42,6 @@ async function getEntityData() {
 }
 
 export default function SearchResults() {
-  //   const entities = await getEntityData()
   //   return (
   //     <div>
   //       <main>
@@ -152,8 +140,7 @@ export default function SearchResults() {
         const data = await getEntityData()
         setEntities(data)
         setError(null)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred')
+      } catch (err:any) {
         setEntities([])
       } finally {
         setLoading(false)

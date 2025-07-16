@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Entity } from '../types/types'
+'use client'
 
+import { useEffect, useState } from 'react'
+import type { Entity } from '../types/types'
 async function getEntityData() {
   // NOTE: In a client-side only environment like this preview, process.env is not available.
   // Replace these with your actual Supabase credentials.
@@ -53,7 +54,7 @@ export default function HomePage() {
         const data = await getEntityData()
         setEntities(data)
         setError(null)
-      } catch (err) {
+      } catch (err: any) {
         setError(err.message || 'An unknown error occurred')
         setEntities([])
       } finally {

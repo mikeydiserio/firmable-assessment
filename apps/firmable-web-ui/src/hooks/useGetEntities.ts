@@ -28,6 +28,7 @@ export function useGetEntities() {
         setIsLoading(false)
       }
     }
+    fetchEntities()
 
   },
 

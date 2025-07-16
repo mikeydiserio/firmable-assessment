@@ -10,11 +10,7 @@
     "skipDefaultLibCheck": true,
     "target": "ES2017",
     "module": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "strict": true,
@@ -40,33 +36,15 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/data/*": [
-        "./src/data/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
-      ],
-      "@/public/*": [
-        "./public/*"
-      ],
-      "@/types/*": [
-        "./src/types/*"
-      ],
-      "@/mocks/*": [
-        "./src/mocks/*"
-      ],
-      "@/hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@/utils/*": [
-        "./src/utils/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/data/*": ["./src/data/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/mocks/*": ["./src/mocks/*"],
+      "@/public/*": ["./public/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"]
     },
     "jsx": "preserve",
     "incremental": true,
@@ -77,19 +55,13 @@
       }
     ]
   },
-  "types": [
-    "vitest/globals"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
-    "**/*.e2e.ts"
-  ],
+  "types": ["vitest/globals"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.e2e.ts"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
     "**/*.mts"
-  ],
+  ]
 }

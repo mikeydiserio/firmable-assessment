@@ -1,35 +1,8 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 
-const resultsStyle = css`
-  width: 100%;
-  @media (min-width: 768px) {
-    width: 75%;
-  }
-
-  h2 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-
-  
-
-  .loading {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-  }
-
-  .pagination {
-    margin-top: 2rem;
-  }
-`
 
 export default function ResultsPanel() {
   return (
-    <div css={resultsStyle}>
+    <div>
       <div className="sort-bar">
         <h2>Search Results</h2>
         <div>

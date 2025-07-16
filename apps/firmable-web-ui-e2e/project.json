@@ -1,26 +1,35 @@
+// filepath: apps/firmable-web-ui-e2e/project.json
 {
-	"name": "firmable-web-ui-e2e",
-	"sourceRoot": "apps/firmable-web-ui-e2e/src",
-	"projectType": "application",
-	"tags": [],
-	"targets": {
-		"e2e": {
-			"executor": "@nx/playwright:playwright",
-			"outputs": [
-				"{workspaceRoot}/dist/.playwright/apps/firmable-web-ui-e2e"
-			],
-			"options": {
-				"config": "apps/firmable-web-ui-e2e/playwright.config.ts"
-			}
-		},
-		"lint": {
-			"executor": "@nx/eslint:lint"
-		},
-		"test": {
-			"executor": "@nx/vite:test"
-		}
-	},
-	"implicitDependencies": [
-		"firmable-web-ui"
-	]
+  "name": "firmable-web-ui-e2e",
+  "projectType": "application",
+  "sourceRoot": "apps/firmable-web-ui-e2e/src",
+  "tags": [
+    "type:e2e",
+    "scope:firmable-web-ui"
+  ],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": [
+        "{projectRoot}/test-results"
+      ],
+      "options": {
+        "config": "{projectRoot}/playwright.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/firmable-web-ui-e2e/**/*.{ts,js}"
+        ]
+      }
+    }
+  },
+  "implicitDependencies": [
+    "firmable-web-ui"
+  ]
 }

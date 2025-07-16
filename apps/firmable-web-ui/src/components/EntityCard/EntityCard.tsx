@@ -33,7 +33,6 @@ const EntityCard: React.FC<EntityCardProps> = ({ entity, onViewDetails }) => {
         {renderDetail('ABN Status', entity.abn_status)}
         {renderDetail('Status From', entity.abn_status_from_date)}
         {renderDetail('Entity Type', entity.entity_type_code)}
-        {renderDetail('ASIC Number', entity.asic_number)}
         {renderDetail('GST Status', entity.gst_status)}
         {renderDetail('GST Status From', entity.gst_status_from_date)}
         {renderDetail('State', entity.state)}

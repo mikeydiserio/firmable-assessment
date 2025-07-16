@@ -1,43 +1,46 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/data/*": [
-        "./src/data/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
-      ],
-      "@/public/*": [
-        "./public/*"
-      ],
-      "@/types/*": [
-        "./src/types/*"
-      ],
-      "@/mocks/*": [
-        "./src/mocks/*"
-      ],
-      "@/hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@/utils/*": [
-        "./src/utils/*"
-      ]
-    },
-    "types": [
-      "node",
-      "jest"
+    "jsx": "preserve",
+    "strict": true,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
-    "target": "es2020"
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "types": [
+      "jest",
+      "node"
+    ]
   },
   "include": [
-    ".next/types/**/*.ts"
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "../../apps/firmable-web-ui/.next/types/**/*.ts",
+    "../../dist/apps/firmable-web-ui/.next/types/**/*.ts",
+    "next-env.d.ts"
   ],
-  "files": [],
+  "exclude": [
+    "node_modules",
+    "jest.config.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
 }

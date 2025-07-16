@@ -1,5 +1,5 @@
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs'
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat'
+import { fixupPluginRules } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import eslint from '@eslint/js'
 import vitestPlugin from '@vitest/eslint-plugin'
@@ -11,8 +11,6 @@ import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import url from 'node:url'
 import tseslint from 'typescript-eslint'
-
-
 
 // @//ts-check
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
@@ -90,9 +88,6 @@ export default tseslint.config(
     linterOptions: { reportUnusedDisableDirectives: 'error' },
     name: 'base-config',
     rules: {
-      //
-      // our plugin :D
-      //
       '@typescript-eslint/ban-ts-comment': [
         'error',
         {
@@ -255,15 +250,6 @@ export default tseslint.config(
       'jsdoc/require-returns': 'off',
       'jsdoc/require-yields': 'off',
       'jsdoc/tag-lines': 'off',
-
-      'regexp/no-dupe-disjunctions': 'error',
-      'regexp/no-useless-character-class': 'error',
-      'regexp/no-useless-flag': 'error',
-      'regexp/no-useless-lazy': 'error',
-      'regexp/no-useless-non-capturing-group': 'error',
-      'regexp/prefer-quantifier': 'error',
-      'regexp/prefer-question-quantifier': 'error',
-      'regexp/prefer-w': 'error',
     },
   },
   {
@@ -280,39 +266,6 @@ export default tseslint.config(
   // test file linting
   //
 
-  // test file specific configuration
-  {
-    files: [
-      'packages/*/tests/**/*.?(m|c)ts?(x)',
-      'packages/integration-tests/tools/**/*.ts',
-    ],
-    ...vitestPlugin.configs.env,
-    rules: {
-      '@typescript-eslint/no-empty-function': [
-        'error',
-        { allow: ['arrowFunctions'] },
-      ],
-      '@typescript-eslint/no-non-null-assertion': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
-      'vitest/no-alias-methods': 'error',
-      'vitest/no-disabled-tests': 'error',
-      'vitest/no-focused-tests': 'error',
-      'vitest/no-identical-title': 'error',
-      'vitest/no-test-prefixes': 'error',
-      'vitest/no-test-return-statement': 'error',
-      'vitest/prefer-describe-function-title': 'error',
-      'vitest/prefer-each': 'error',
-      'vitest/prefer-spy-on': 'error',
-      'vitest/prefer-to-be': 'error',
-      'vitest/prefer-to-contain': 'error',
-      'vitest/prefer-to-have-length': 'error',
-      'vitest/valid-expect': 'error',
-    },
-    settings: { vitest: { typecheck: true } },
-  },
 
   {
     files: ['packages/*/tests/**/vitest-custom-matchers.d.ts'],
@@ -326,312 +279,11 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
-
-
-
-  //
-  // tools and tests
-  //
   {
-    files: [
-      '**/tools/**/*.?(m|c)ts?(x)',
-      '**/tests/**/*.?(m|c)ts?(x)',
-      'packages/integration-tests/**/*.?(m|c)ts?(x)',
-    ],
-    name: 'tools-and-test-files',
-    rules: {
-      // allow console logs in tools and tests
-      'no-console': 'off',
-    },
-  },
-  {
-    files: [
-      'eslint.config.mjs',
-      'knip.ts',
-      'packages/*/src/index.ts',
-      'vitest.config.mts',
-      'packages/*/vitest.config.mts',
-    ],
-    name: 'no-default-export',
-    rules: {
-      // requirement
-      'import/no-default-export': 'off',
-    },
-  },
-
-  //
-  // plugin source file linting
-  //
-
-  {
-    extends: [eslintPluginPlugin.configs['flat/recommended']],
-    files: [
-      'packages/eslint-plugin-internal/**/*.?(m|c)ts?(x)',
-      'packages/eslint-plugin/**/*.?(m|c)ts?(x)',
-    ],
-    name: 'eslint-plugin-and-eslint-plugin-internal',
-
-    rules: {
-      '@typescript-eslint/internal/no-typescript-estree-import': 'error',
-    },
-  },
-  {
-    files: [
-      'packages/eslint-plugin-internal/src/rules/**/*.?(m|c)ts?(x)',
-      'packages/eslint-plugin/src/configs/**/*.?(m|c)ts?(x)',
-      'packages/typescript-eslint/src/configs/**/*.?(m|c)ts?(x)',
-      'packages/eslint-plugin/src/rules/**/*.?(m|c)ts?(x)',
-    ],
-    name: 'configs-and-rules',
-    rules: {
-      'eslint-plugin/no-property-in-node': [
-        'error',
-        {
-          additionalNodeTypeFiles: [
-            'packages[\\/]types[\\/]src[\\/]generated[\\/]ast-spec.ts',
-          ],
-        },
-      ],
-      'eslint-plugin/require-meta-docs-description': [
-        'error',
-        { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },
-      ],
-
-      // specifically for rules - default exports makes the tooling easier
-      'import/no-default-export': 'off',
-
-      'no-restricted-syntax': [
-        'error',
-        {
-          message:
-            "Retrieve options from create's second parameter so that defaultOptions are applied.",
-          selector:
-            'ExportDefaultDeclaration Property[key.name="create"] MemberExpression[object.name="context"][property.name="options"]',
-        },
-        restrictNamedDeclarations,
-      ],
-    },
-  },
-  {
-    files: ['packages/eslint-plugin/src/rules/index.ts'],
-    name: 'eslint-plugin/source-files/rules-index-file',
-    rules: {
-      // enforce alphabetical ordering
-      'import/order': ['error', { alphabetize: { order: 'asc' } }],
-      'sort-keys': 'error',
-    },
-  },
-
-  //
-  // generated files
-  //
-
-  {
-    files: [
-      'packages/scope-manager/src/lib/*.?(m|c)ts?(x)',
-      'packages/eslint-plugin/src/configs/*.?(m|c)ts?(x)',
-    ],
-    name: 'generated-files',
-    rules: {
-      '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
-      '@typescript-eslint/internal/no-typescript-default-import': 'off',
-      '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
-    },
-  },
-
-  //
-  // ast spec linting
-  //
-
-  {
-    files: ['packages/ast-spec/src/**/*.?(m|c)ts?(x)'],
-    name: 'ast-spec/source-files',
-    rules: {
-      // disallow ALL unused vars
-      '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'all' }],
-      '@typescript-eslint/sort-type-constituents': 'error',
-
-      'perfectionist/sort-interfaces': [
-        'error',
-        {
-          customGroups: {
-            first: ['type'],
-          },
-          groups: ['first', 'unknown'],
-        },
-      ],
-    },
-  },
-  {
-    files: ['packages/ast-spec/**/*.?(m|c)ts?(x)'],
-    name: 'ast-spec',
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          message:
-            'To prevent nx build errors, all `typescript-estree` imports should be done via `packages/ast-spec/tests/util/parsers/typescript-estree-import.ts`.',
-          name: '@typescript-eslint/typescript-estree',
-        },
-      ],
-    },
-  },
-
-  //
-  // website linting
-  //
-
-  {
-    extends: [
-      jsxA11yPlugin.flatConfigs.recommended,
-      // https://github.com/facebook/react/pull/30774
-      // @ts-expect-error -- Temporary types incompatibility pending flat config support
-      { name: 'react/recommended', ...reactPlugin.configs.flat.recommended },
-      fixupConfigRules([
-        {
-          name: 'react-hooks/recommended',
-          // https://github.com/facebook/react/pull/30774
-          // @ts-expect-error -- Temporary types incompatibility pending flat config support
-          ...compat.config(reactHooksPlugin.configs.recommended)[0],
-        },
-      ]),
-    ],
-    files: ['packages/website/**/*.?(c|m)[tj]s?(x)'],
-    name: 'website',
-    rules: {
-      '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
-      'import/no-default-export': 'off',
-      'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
-      'react/jsx-no-target-blank': 'off',
-      'react/no-unescaped-entities': 'off',
-      'react/prop-types': 'off',
-    },
     settings: {
       react: {
         version: 'detect',
       },
-    },
-  },
-  {
-    files: ['packages/website/src/**/*.?(m|c)ts?(x)'],
-    name: 'website/source-files',
-    rules: {
-      'import/no-default-export': 'off',
-      // allow console logs in the website to help with debugging things in production
-      'no-console': 'off',
-    },
-  },
-  {
-    files: ['packages/website-eslint/src/mock/**/*.js', '**/*.d.?(m|c)ts?(x)'],
-    name: 'website/source-files/mocks-and-declaration-files',
-    rules: {
-      // mocks and declaration files have to mirror their original package
-      'import/no-default-export': 'off',
-    },
-  },
-  {
-    files: ['**/*'],
-    ignores: [
-      'packages/eslint-plugin/src/configs/eslintrc/*',
-      'packages/eslint-plugin/src/configs/flat/*',
-      'packages/scope-manager/src/configs/*',
-    ],
-    name: 'all-files',
-    rules: {
-      '@typescript-eslint/sort-type-constituents': 'off',
-      'perfectionist/sort-classes': [
-        'error',
-        {
-          groups: [
-            'index-signature',
-            'static-property',
-            'static-block',
-            ['protected-property', 'protected-accessor-property'],
-            ['private-property', 'private-accessor-property'],
-            ['property', 'accessor-property'],
-            'constructor',
-            'static-method',
-            'protected-method',
-            'private-method',
-            'method',
-            ['get-method', 'set-method'],
-            'unknown',
-          ],
-        },
-      ],
-      'perfectionist/sort-enums': 'off',
-      'perfectionist/sort-objects': 'error',
-      'perfectionist/sort-union-types': [
-        'error',
-        {
-          groups: ['keyword', 'unknown', 'nullish'],
-          type: 'natural',
-        },
-      ],
-    },
-  },
-  {
-    files: ['packages/ast-spec/src/**/*.ts'],
-    rules: {
-      'perfectionist/sort-interfaces': [
-        'error',
-        {
-          customGroups: {
-            first: ['^type$'],
-          },
-          groups: ['first', 'unknown'],
-        },
-      ],
-    },
-  },
-  {
-    files: [
-      'packages/eslint-plugin/src/rules/*.ts',
-      'packages/eslint-plugin-internal/src/rules/*.ts',
-    ],
-    name: 'eslint-plugin-and-eslint-plugin-internal/source-files/rules',
-    rules: {
-      'perfectionist/sort-objects': [
-        'error',
-        {
-          customGroups: {
-            first: ['^loc$', '^name$', '^node$', '^type$'],
-            fourth: ['^fix$'],
-            second: ['^meta$', '^messageId$', '^start$'],
-            third: ['^defaultOptions$', '^data$', '^end$'],
-          },
-          groups: ['first', 'second', 'third', 'fourth', 'unknown'],
-        },
-      ],
-    },
-  },
-  {
-    files: ['packages/eslint-plugin/tests/rules/*.test.ts'],
-    name: 'eslint-plugin-rules-test-files',
-    rules: {
-      'perfectionist/sort-objects': [
-        'error',
-        {
-          customGroups: { top: ['^valid$'] },
-          groups: ['top', 'unknown'],
-        },
-      ],
-    },
-  },
-  {
-    files: ['packages/typescript-estree/src/**/*.ts'],
-    name: 'typescript-estree/source-files',
-    rules: {
-      'perfectionist/sort-objects': [
-        'error',
-        {
-          customGroups: {
-            first: ['^type$'],
-            second: ['^loc$', '^range$'],
-          },
-          groups: ['first', 'second'],
-        },
-      ],
     },
   },
 )

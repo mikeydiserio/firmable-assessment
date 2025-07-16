@@ -2,30 +2,27 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "es2015",
-    "composite": true,
+    "module": "commonjs",
     "types": [
-      "@testing-library/jest-dom/vitest",
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node",
-      "vitest"
-    ]
+      "jest",
+      "node"
+    ],
+    "lib": [
+      "dom",
+      "es2019"
+    ],
+    "jsx": "react"
   },
   "include": [
-    "**/*.test.ts",
     "**/*.spec.ts",
-    "**/*.test.tsx",
+    "**/*.test.ts",
     "**/*.spec.tsx",
-    "**/*.test.js",
+    "**/*.test.tsx",
     "**/*.spec.js",
-    "**/*.test.jsx",
+    "**/*.test.js",
     "**/*.spec.jsx",
-    "**/*.d.ts"
-  ],
-  "files": [
-    "../../node_modules/@nrwl/react/typings/cssmodule.d.ts",
-    "../../node_modules/@nrwl/react/typings/image.d.ts"
+    "**/*.test.jsx",
+    "**/*.d.ts",
+    "jest.config.ts"
   ]
 }

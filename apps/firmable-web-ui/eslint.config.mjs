@@ -1,15 +1,14 @@
-/* eslint-disable import/no-anonymous-default-export */
-import { fixupConfigRules } from '@eslint/compat';
-import { FlatCompat } from '@eslint/eslintrc';
-import js from '@eslint/js';
-import nx from '@nx/eslint-plugin';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import baseConfig from '../../eslint.config.mjs';
+import { FlatCompat } from '@eslint/eslintrc'
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+import js from '@eslint/js'
+import { fixupConfigRules } from '@eslint/compat'
+import nx from '@nx/eslint-plugin'
+import baseConfig from '../../eslint.config.mjs'
 const compat = new FlatCompat({
   baseDirectory: dirname(fileURLToPath(import.meta.url)),
   recommendedConfig: js.configs.recommended,
-});
+})
 
 export default [
   ...fixupConfigRules(compat.extends('next')),
@@ -19,4 +18,4 @@ export default [
   {
     ignores: ['.next/**/*'],
   },
-];
+]
