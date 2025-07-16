@@ -126,8 +126,5 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.0",
     "vitest-canvas-mock": "^0.3.3"
-  },
-  "overrides": {
-    "eslint": "9.31.1"
   }
 }
