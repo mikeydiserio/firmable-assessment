@@ -13,19 +13,22 @@ permissions:
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
+  # Deploy job only runs if CI workflow completed successfully
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
+    
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,6 +36,7 @@ jobs:
           fetch-depth: 0
           filter: tree:0
 
+      # Install pnpm
       - name: Install pnpm
         run: npm install -g pnpm
 
@@ -45,34 +49,35 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # If ./.github/actions/nx-set-shas is a custom action and exists, keep as is.
-      # Otherwise, comment out or provide the correct official or community action.
-      # - name: Setup Nx
-      #   uses: ./.github/actions/nx-set-shas
+      - name: Setup Nx
+        uses: nrwl/nx-set-shas@v4
 
+      # Build only frontend applications for deployment
       - name: Build frontend applications
         run: pnpm exec nx build firmable-web-ui --configuration=production
         env:
+          # Add your Supabase environment variables for production build
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
 
-      # If ./.github/actions/configure-pages is a custom action and exists, keep as is.
-      # Otherwise, use the official actions/configure-pages if available, or comment out.
-      # - name: Setup Pages
-      #   uses: actions/configure-pages@v5
-      #   with:
-      #     static_site_generator: next
+      # Setup GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        with:
+          # Automatically inject basePath in your Next.js configuration file and disable
+          # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
+          #
+          # You may remove this line if you want to manage the configuration yourself.
+          static_site_generator: next
 
-      # If ./.github/actions/upload-pages-artifact is a custom action and exists, keep as is.
-      # Otherwise, use the official actions/upload-pages-artifact if available, or comment out.
-      # - name: Upload artifact
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: ./dist/apps/firmable-web-ui
+      # Upload the built application as GitHub Pages artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist/apps/firmable-web-ui
 
-      # If ./.github/actions/deploy-pages is a custom action and exists, keep as is.
-      # Otherwise, use the official actions/deploy-pages if available, or comment out.
-      # - name: Deploy to GitHub Pages
-      #   id: deployment
-      #   uses: actions/deploy-pages@v4
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
