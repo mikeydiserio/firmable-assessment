@@ -24,11 +24,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -83,7 +83,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   # Alternative deployment options (uncomment as needed)
-  
+
   # Deploy to Vercel (uncomment and configure secrets)
   # deploy-vercel:
   #   runs-on: ubuntu-latest
@@ -91,26 +91,26 @@ jobs:
   #   steps:
   #     - name: Checkout
   #       uses: actions/checkout@v4
-  #     
+  #
   #     - name: Install pnpm
   #       run: npm install -g pnpm
-  #     
+  #
   #     - name: Setup Node.js
   #       uses: actions/setup-node@v4
   #       with:
   #         node-version: 20
   #         cache: "pnpm"
-  #     
+  #
   #     - name: Install dependencies
   #       run: pnpm install --frozen-lockfile
-  #     
+  #
   #     - name: Build application
   #       run: pnpm exec nx build firmable-web-ui --configuration=production
   #       env:
   #         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
   #         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
   #         SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-  #     
+  #
   #     - name: Deploy to Vercel
   #       uses: amondnet/vercel-action@v25
   #       with:
@@ -127,26 +127,26 @@ jobs:
   #   steps:
   #     - name: Checkout
   #       uses: actions/checkout@v4
-  #     
+  #
   #     - name: Install pnpm
   #       run: npm install -g pnpm
-  #     
+  #
   #     - name: Setup Node.js
   #       uses: actions/setup-node@v4
   #       with:
   #         node-version: 20
   #         cache: "pnpm"
-  #     
+  #
   #     - name: Install dependencies
   #       run: pnpm install --frozen-lockfile
-  #     
+  #
   #     - name: Build application
   #       run: pnpm exec nx build firmable-web-ui --configuration=production
   #       env:
   #         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
   #         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
   #         SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-  #     
+  #
   #     - name: Deploy to Netlify
   #       uses: nwtgck/actions-netlify@v3.0
   #       with:
