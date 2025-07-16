@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: ./.github/actions/checkout
         with:
           fetch-depth: 0
           filter: tree:0
@@ -41,7 +41,7 @@ jobs:
         run: npm install -g pnpm
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: ./.github/actions/setup-node
         with:
           node-version: 20
           cache: "pnpm"
@@ -50,7 +50,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Setup Nx
-        uses: nrwl/nx-set-shas@v4
+        uses: ./.github/actions/nx-set-shas
 
       # Build only frontend applications for deployment
       - name: Build frontend applications
@@ -63,7 +63,7 @@ jobs:
 
       # Setup GitHub Pages
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: ./.github/actions/configure-pages
         with:
           # Automatically inject basePath in your Next.js configuration file and disable
           # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
@@ -73,14 +73,14 @@ jobs:
 
       # Upload the built application as GitHub Pages artifact
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: ./.github/actions/upload-pages-artifact
         with:
           path: ./dist/apps/firmable-web-ui
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: ./.github/actions/deploy-pages
 
   # Alternative deployment options (uncomment as needed)
 
