@@ -1,0 +1,7 @@
+name: 'Upload GitHub Pages Artifact'
+description: 'Composite action to upload GitHub Pages artifact using actions/upload-pages-artifact'
+runs:
+  using: 'composite'
+  steps:
+    - name: Upload GitHub Pages artifact
+      uses: actions/upload-pages-artifact@v3.0.1

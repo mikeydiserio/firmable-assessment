@@ -1,0 +1,9 @@
+name: Deploy to GitHub Pages
+description: 'Depoloys the built application to GitHub Pages'
+inputs: {}
+outputs: {}
+runs:
+  using: 'composite'
+  steps:
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4.7.3

@@ -1,0 +1,9 @@
+name: 'Checkout'
+description: 'Checks out the repository using actions/checkout'
+inputs: {}
+outputs: {}
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4.2.2
