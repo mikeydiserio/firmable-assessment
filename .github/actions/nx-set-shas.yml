@@ -1,0 +1,2 @@
+- name: Nx set SHAs
+  uses: nrwl/nx-set-shas@v4.3.0
