@@ -1,15 +1,20 @@
 {
-	"npmClient": "pnpm",
-	"command": {
-		"publish": {
-			"message": "chore(release): publish [skip ci]",
-			"registry": ""
-		}
-	},
-	"ignoreChanges": [
-		"**.stories.*",
-		"**/*.test.*",
-		"**/*.md"
-	],
-	"version": "independent"
+  "npmClient": "pnpm",
+  "command": {
+    "publish": {
+      "message": "chore(release): publish [skip ci]",
+      "registry": ""
+    }
+  },
+  "ignoreChanges": [
+    "**.stories.*",
+    "**/*.test.*",
+    "**/*.md"
+  ],
+  "version": "independent",
+  "packages": [
+    "packages/*",
+    "apps/*"
+  ],
+  "useWorkspaces": true
 }
